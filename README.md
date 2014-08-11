@@ -5,7 +5,7 @@ A text based console RPG that is heavily influenced by MUDs.
 
 License
 =====
-MIT
+MIT License. Copyright 2014 Paul Massey.
 
 Instructions
 =====
