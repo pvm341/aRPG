@@ -27,3 +27,5 @@ History
 Troubleshooting
 =====
 
+Known Bugs
+=====
