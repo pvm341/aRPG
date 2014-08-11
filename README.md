@@ -14,7 +14,7 @@ A makefile needs to be made.
 Authors
 =====
 * Paul Massey
-* Bertrand Brompton
+* Bertrand Brompton (https://github.com/angelofmystra)
 
 How to contribute
 =====
