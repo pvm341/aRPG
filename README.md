@@ -13,7 +13,7 @@ A makefile needs to be made.
 
 Authors
 =====
-* Paul Massey
+* Paul Massey (https://github.com/pvm341)
 * Bertrand Brompton (https://github.com/angelofmystra)
 
 How to contribute
