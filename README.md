@@ -14,6 +14,7 @@ A makefile needs to be made.
 Authors
 =====
 Paul Massey
+Bertrand Brompton
 
 How to contribute
 =====
