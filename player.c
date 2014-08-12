@@ -9,7 +9,7 @@
 /* being static only available in this model akin to private data item in Java/C++ */
 static pll head_of_player_list=NULL;
 
-static int cmp_players_alpha(pplayer player1, pplayer player2){
+static int cmp_players_alpha(const pplayer player1, const pplayer player2){
   return strcmp(player1->name,player2->name);
 }
 
@@ -17,12 +17,13 @@ static int cmp_player_name(pplayer player, char *name){
   return strcmp(player->name,name);
 }
 
-static void display_player(FILE *file, pplayer player){
+static int display_player(FILE *file, pplayer player){
   int total = 0;
   char pricestr[21];
   fprintf(file,"%s has %d %s in their inventory list\n",player->name,player->no_items_in_inventory,player->no_items_in_inventory==1?"item":"items");
   total = display_inventory_list(file,player->inventory);
   printf("This makes %s worth %s\n\n",player->name,price_disp(pricestr,total));
+  return total;
 }
 
 static void del_current_player(pll ptr){
@@ -52,8 +53,11 @@ void save_player(char *name){
 }
 
 void del_player(char *name){
-
+  int okay = del_list_item(&head_of_player_list,name,del_current_player,cmp_player_name);
+  if (!okay)
+    printf("Player %s not found!\n",name);
 }
+
 void display_all_players(){
   display_list(stdout,head_of_player_list,display_player);
 }
@@ -71,6 +75,6 @@ void del_all_players(){
 //  }
 //}
 
-pll find_player(char *name){
+pll find_player(const char *name){
   return find_item(head_of_player_list,name,cmp_player_name);
 }

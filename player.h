@@ -18,7 +18,7 @@ void load_player(char *name);
 void save_player(char *name);
 void del_player(char *name);
 void del_all_players();
-pll find_player(char *name);
+pll find_player(const char *name);
 void display_all_players();
 
 //  tplayer player[2] =             {

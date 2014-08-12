@@ -89,11 +89,11 @@ int add_item_to_inventory(const char *name, const tinventoryitem an_inv_item){
     return error;
 }
 
-int del_item_to_inventory(const char *name, const char *inv_item){
+int del_item_from_inventory(const char *name, const char *inv_item){
   int okay = 0; //assume error will result
-  pll ptr_item, ptr_player = find_player(name);
+  pll ptr_player = find_player(name);
   pplayer player = ptr_player->data;
-  if (okay = del_list_item(&player->inventory,inv_item,NULL,cmp_inv_item_to_item_name)){
+  if ((okay = del_list_item(&player->inventory,inv_item,NULL,cmp_inv_item_to_item_name))){
     player->no_items_in_inventory--;
   }
   return !okay;

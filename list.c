@@ -157,7 +157,7 @@ void delete_all(dll head, void(*free_on_del)())
   }
 }
 
-void display_list(FILE *file, const pll head, int (*printrec)())
+int display_list(FILE *file, const pll head, int (*printrec)())
 {
   pll ptr;
   int c;
@@ -171,7 +171,8 @@ void display_list(FILE *file, const pll head, int (*printrec)())
     printrec(file,ptr->data);
   }
   if (file == stdout)
-   printf("----------\nList finish\n");
+    printf("----------\nList finish\n");
+  return c;
 }
 
 

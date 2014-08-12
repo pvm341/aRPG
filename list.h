@@ -31,7 +31,7 @@ int cmp_chr(const char item1, const char item2);
 void add_list_node(dll head, void *data);
 void add_ordered_list_node(dll head, void *data, int (*cmp)());
 void delete_all(dll head, void(*free_on_del)());
-void display_list(FILE *file, pll head, int (*printrec)());
+int display_list(FILE *file, pll head, int (*printrec)());
 int del_list_item(dll head, const void *item, void (*free_on_del)(), int(*cmp)());
 int delete_item(dll head, const void *item, void(*free_on_del)(), int(*cmp)());
 pll find_item(const pll head, const void *item, int (*cmp)());
