@@ -9,12 +9,14 @@
 #include <stdlib.h>
 #include "inventory.h"
 #include "player.h"
+#include "location.h"
 
 /*
  *
  */
 FILE *nul;
 int main(int argc, char** argv) {
+  int loc_id;
   nul  = fopen("/dev/null","w");
   tinventoryitem the_inv_item;
   the_inv_item = create_inv_item("Iron Axe",83);
@@ -42,6 +44,10 @@ int main(int argc, char** argv) {
   display_all_players();
   del_all_players();
   display_all_players();
+  loc_id = 3;
+  do {
+    loc_id = get_new_loc(loc_id);
+  } while(loc_id>=0);
   fclose(nul);
   return (EXIT_SUCCESS);
 }

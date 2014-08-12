@@ -30,11 +30,12 @@
 	<string.h>
 	"list.h"
 
-1407824423 source:/home/paul/c/rpg/main.c
+1407872950 source:/home/paul/c/rpg/main.c
 	<stdio.h>
 	<stdlib.h>
 	"inventory.h"
 	"player.h"
+	"location.h"
 
 1407825300 source:/home/paul/c/rpg/player.c
 	<stdio.h>
@@ -44,4 +45,13 @@
 	"inventory.h"
 	"player.h"
 	"list.h"
+
+1407876842 source:/home/paul/c/rpg/location.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"list.h"
+	"location.h"
+
+1407873396 /home/paul/c/rpg/location.h
 
