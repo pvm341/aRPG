@@ -24,7 +24,8 @@ struct sll {
   struct sll *next;
 };
 
-typedef struct sll t_ll, *pll, **dll;
+typedef struct sll tll, *pll, **dll;
+
 int cmp_int(const int item1, const int item2);
 int cmp_chr(const char item1, const char item2);
 

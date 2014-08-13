@@ -18,7 +18,7 @@ static pll create_list_item(void *new_data)
 {
   pll new_node;
 
-  if ((new_node = (pll)malloc(sizeof(t_ll)))!=NULL)
+  if ((new_node = (pll)malloc(sizeof(tll)))!=NULL)
   {
     new_node->data = new_data;
     new_node->next = NULL;

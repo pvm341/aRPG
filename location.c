@@ -6,14 +6,15 @@
 #include "location.h"
 #include "cmdpu.h"
 
-tlocation dummy[7] =  {
-                        {1UL,{-1,-1, 3,-1,-1,-1},"This is the north dummy location", NULL},
-                        {2UL,{-1,-1,-1, 3,-1,-1},"This is the east dummy location", NULL},
-                        {3UL,{ 3,-1,-1,-1,-1,-1},"This is the south dummy location", NULL},
-                        {4UL,{ 0, 1, 2, 4, 5, 6},"This is the central dummy location", NULL},
-                        {5UL,{-1, 3,-1,-1,-1,-1},"This is the west dummy location", NULL},
-                        {6UL,{-1,-1,-1,-1,-1, 3},"This is the up dummy location", NULL},
-                        {7UL,{-1,-1,-1,-1, 3,-1},"This is the down dummy location", NULL},
+tlocation dummy[] =  {
+                        {1UL,{ 7,-1, 3,-1,-1,-1},"A cave", "Go south or get a torch and go north", NULL},
+                        {2UL,{-1,-1,-1, 3,-1,-1},"This is the east dummy location", "West is the only way out",NULL},
+                        {3UL,{ 3,-1,-1,-1,-1,-1},"This is the south dummy location", "North  is the only way out",NULL},
+                        {4UL,{ 0, 1, 2, 4, 5, 6},"This is the central dummy location", "All exits available",NULL},
+                        {5UL,{-1, 3,-1,-1,-1,-1},"This is the west dummy location", "East is the only way out",NULL},
+                        {6UL,{-1,-1,-1,-1,-1, 3},"This is the up dummy location", "Down is the only way out",NULL},
+                        {7UL,{-1,-1,-1,-1, 3,-1},"This is the down dummy location", "Up is the only way out",NULL},
+                        {8UL,{-1,-1, 0,-1,-1,-1},"a dark secion of a cave","Light a torch or go south",NULL}
                      };
 
 /**
@@ -35,4 +36,8 @@ int *display_location(const int loc_id){
   }
   fprintf(stdout,")\nWhat to do ?");
   return dummy[loc_id].exits;
+}
+
+plocation get_loc(const int loc_id){
+  return &dummy[loc_id];
 }
