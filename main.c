@@ -10,6 +10,7 @@
 #include "inventory.h"
 #include "player.h"
 #include "location.h"
+#include "cmdpu.h"
 
 /*
  *
@@ -46,7 +47,7 @@ int main(int argc, char** argv) {
   display_all_players();
   loc_id = 3;
   do {
-    loc_id = get_new_loc(loc_id);
+    loc_id = get_command(commands,loc_id,display_location);
   } while(loc_id>=0);
   fclose(nul);
   return (EXIT_SUCCESS);

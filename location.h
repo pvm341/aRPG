@@ -9,5 +9,5 @@ pll items_list;
 
 typedef struct slocation tlocation, *plocation,  alocation[], **dlocation;
 
-int get_new_loc(const int loc_id);
+int *display_location(const int loc_id);
 #endif
