@@ -7,47 +7,90 @@
 #include "cmdpu.h"
 #define CMDLINELEN 80
 
-typedef enum  {NORTH, EAST, SOUTH, WEST, UP, DOWN, HELP, HINT, LOOK, TAKE, LEAVE } CMDS;
+const acommand commands = {
+                              {NORTH, "north"},
+                              {EAST,  "east"},
+                              {SOUTH, "south"},
+                              {WEST,  "west"},
+                              {UP,    "up"},
+                              {DOWN,  "down"},
+                              {HELP,  "help"},
+                              {HINT,  "hint"},
+                              {INVENTORY, "inv"},
+                              {LOOK,  "look"},
+                              {TAKE,  "take"},
+                              {LEAVE, "leave"},
+                              {QUIT,  "Quit"},
+                              {NORTH, "n"},
+                              {NORTH, "go north"},
+                              {EAST,  "e"},
+                              {EAST,  "go east"},
+                              {SOUTH, "s"},
+                              {SOUTH, "go south"},
+                              {WEST,  "w"},
+                              {WEST,  "go west"},
+                              {UP,    "u"},
+                              {UP,    "go up"},
+                              {DOWN,  "d"},
+                              {DOWN,  "go down"},
+                              {HELP,  "?"},
+                              {HINT,  "h"},
+                              {INVENTORY, "i"},
+                              {INVENTORY, "inventory"},
+                              {LOOK,  "l"},
+                              {LOOK,  "view"},
+                              {LOOK,  "examine"},
+                              {TAKE,  "t"},
+                              {TAKE,  "get"},
+                              {TAKE,  "pickup"},
+                              {LEAVE, "p"},
+                              {LEAVE, "put"},
+                              {LEAVE, "drop"},
+                              {QUIT,  "X"},
+                              {QUIT,  "Exit"},
+                              {END_OF_LIST, "end of list"}
+                            };
 
-const char *commands[] = {"north", "east", "south", "west","up", "down","help",
-                          "hint", "look", "take","leave", "Quit", NULL};
-
-int get_command(const char *commands[], int loc_id, int *(*prompt_func)()){
+static int find_command(const acommand commands, int loc_id, int *(*prompt_func)()){
   char cmdline[CMDLINELEN+1];
-  int cmd, *exits, notfound=1;
+  int  i,*loc_exits, notfound=1;
   char *ptr;
+  CMDS cmd;
   do {
-    exits=prompt_func(loc_id);
+    loc_exits=prompt_func(loc_id);
     fgets(cmdline,CMDLINELEN,stdin);
     if ((ptr=strchr(cmdline,'\n'))){
       *ptr=0;
     }
-    if (strcmp(cmdline,"Quit")){
-      cmd=0;
-      while ((commands[cmd] && notfound)){
-        if (commands[cmd]){
-          notfound = strcmp(cmdline,commands[cmd]);
-          notfound |= !(exits[cmd]>=0);
-          cmd+= notfound ?1:0;
-        }
-      }
-      if (notfound == 0 && cmd<6){
-        cmd = (int)exits[cmd];
+    i=0;
+    while ((commands[i].cmd_no<END_OF_LIST && notfound)){
+      notfound = strcmp(cmdline,commands[i].cmdstr);
+      notfound |= !(loc_exits[commands[i].cmd_no]>=0);
+      if (notfound){
+        i++;
       } else {
-        process_cmd(cmd, loc_id);
-        notfound=1;
+        cmd = commands[i].cmd_no;
       }
-    } else {
-      cmd = -1;
-      notfound = 0;
+    }
+    if (notfound == 0 && cmd<HELP){
+      cmd = (int)loc_exits[cmd];
+    } else if (notfound == 0){
+      notfound = 1;
+      if (process_cmd(cmd, loc_id)){
+        notfound=0;
+        cmd = -1;
+      }
     }
   } while (notfound);
   return cmd;
 }
+int get_command(const int loc_id,int *(*prompt_func)()){
+  return find_command(commands,loc_id,prompt_func);
+}
 
-void process_cmd(const int cmd, const int cur_loc){
+int process_cmd(const int cmd, const int cur_loc){
   plocation location = get_loc(cur_loc);
-  int i;
+  int i,ret_val=0;
   switch(cmd){
     case NORTH:
     case SOUTH:
@@ -63,8 +106,8 @@ void process_cmd(const int cmd, const int cur_loc){
 
     case HELP:
       fprintf(stdout, "The commands/actions available are :-\n");
-      for (i=0;commands[i];i++){
-        fprintf(stdout,"%s%s",i>0 && commands[i+1]?", ":!commands[i+1]?" and ":"\0",commands[i]);
+      for (i=0;commands[i].cmd_no<END_OF_LIST;i++){
+        fprintf(stdout,"%s%s",i>0 && commands[i+1].cmdstr?", ":!commands[i+1].cmdstr?" and ":"\0",commands[i].cmdstr);
       }
       fprintf(stdout,"\n");
       break;
@@ -77,6 +120,9 @@ void process_cmd(const int cmd, const int cur_loc){
     case LEAVE:
       fprintf(stdout,"Leave - Not yet implemented\n");
       break;
-
+    case QUIT:
+      ret_val = -1;
+      break;
   }
+  return ret_val;
 }

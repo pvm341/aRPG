@@ -31,9 +31,33 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="cmdpu.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="cmdpu.h" />
+		<Unit filename="currencylsd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="currencylsd.h" />
+		<Unit filename="inventory.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="inventory.h" />
+		<Unit filename="list.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="list.h" />
+		<Unit filename="location.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="location.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="player.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="player.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />

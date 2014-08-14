@@ -22,17 +22,21 @@ tlocation dummy[] =  {
  */
 
 int *display_location(const int loc_id){
-  int c, i;
+  int c, d, i;
 
   fprintf(stdout,"%s\n",dummy[loc_id].description);
   fprintf(stdout,"Exits available are (");
-  for(i=0, c=0; i<6; i++){
-    if (dummy[loc_id].exits[i]>=0) {
+  for(i=0, d=NORTH, c=0; d<=DOWN; ){
+    if (dummy[loc_id].exits[d]>=0) {
       if (c++){
         fprintf(stdout,",");
       }
-      fprintf(stdout,"%s",commands[i]);
+      fprintf(stdout,"%s",commands[i].cmdstr);
     }
+    while (commands[i].cmd_no == d){
+      i++;
+    }
+    d++;
   }
   fprintf(stdout,")\nWhat to do ?");
   return dummy[loc_id].exits;
