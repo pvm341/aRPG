@@ -6,6 +6,7 @@
 #include "location.h"
 #include "cmdpu.h"
 #define CMDLINELEN 80
+#define LOCAL_DEBUG 1
 
 const acommand commands = {
                               {NORTH, "north"},
@@ -22,28 +23,25 @@ const acommand commands = {
                               {LEAVE, "leave"},
                               {QUIT,  "Quit"},
                               {NORTH, "n"},
-                              {NORTH, "go north"},
                               {EAST,  "e"},
-                              {EAST,  "go east"},
                               {SOUTH, "s"},
-                              {SOUTH, "go south"},
                               {WEST,  "w"},
-                              {WEST,  "go west"},
                               {UP,    "u"},
-                              {UP,    "go up"},
                               {DOWN,  "d"},
-                              {DOWN,  "go down"},
                               {HELP,  "?"},
                               {HINT,  "h"},
+                              {LOOK,  "l"},
+                              {TAKE,  "t"},
+                              {GO,    "go"},
+                              {LEAVE, "p"},
+                              {SAVE,  "save"},
+                              {LOAD,  "load"},
                               {INVENTORY, "i"},
                               {INVENTORY, "inventory"},
-                              {LOOK,  "l"},
                               {LOOK,  "view"},
                               {LOOK,  "examine"},
-                              {TAKE,  "t"},
                               {TAKE,  "get"},
                               {TAKE,  "pickup"},
-                              {LEAVE, "p"},
                               {LEAVE, "put"},
                               {LEAVE, "drop"},
                               {QUIT,  "X"},
@@ -51,14 +49,52 @@ const acommand commands = {
                               {END_OF_LIST, "end of list"}
                             };
 
+static char *replace_strchr(char *str, char schr, char rchr){
+  char *ptr = strchr(str,schr);
+  if (ptr){
+    *ptr=rchr;
+  }
+  return str;
+}
+
+static CMDS find_cmd_from_line(char *cmd_str){
+  char *ptr;
+  CMDS cmd;
+  int idx, notfound;
+
+  cmd_str = replace_strchr(cmd_str, '\n','\0');
+#if LOCAL_DEBUG == 1
+  printf("**Debug 1 cmd_str <%s>\n",cmd_str?cmd_str:"NULL");
+#endif
+  cmd_str = replace_strchr(cmd_str, ' ','\0');
+#if LOCAL_DEBUG == 1
+  printf("**Debug 2 cmd_str <%s>\n",cmd_str?cmd_str:"NULL");
+#endif
+  // Now cmd_str is just the first word
+  // args is NULL or points to the first character after the space
+  // args is returned to the calling routine
+  notfound = 1;
+  idx = 0;
+  while (notfound && commands[idx].cmd_no < END_OF_LIST){
+    notfound = strcmp(cmd_str,commands[idx].cmdstr);
+    if (notfound){
+      idx++;
+    } else {
+      cmd = commands[idx].cmd_no;
+    }
+  }
+  return cmd;
+}
+
 static int find_command(const acommand commands, int loc_id, int *(*prompt_func)()){
   char cmdline[CMDLINELEN+1];
-  int  i,*loc_exits, notfound=1;
+  int  *loc_exits, notfound=1;
   char *ptr;
   CMDS cmd;
   do {
     loc_exits=prompt_func(loc_id);
     fgets(cmdline,CMDLINELEN,stdin);
+#if 0
     if ((ptr=strchr(cmdline,'\n'))){
       *ptr=0;
     }
@@ -72,9 +108,18 @@ static int find_command(const acommand commands, int loc_id, int *(*prompt_func)
         cmd = commands[i].cmd_no;
       }
     }
-    if (notfound == 0 && cmd<HELP){
+#else
+    cmd = find_cmd_from_line(cmdline);
+    if (cmd == GO){
+      ptr = strchr(cmdline,'\0');
+      ptr++;
+      cmd = find_cmd_from_line(ptr);
+    }
+#endif
+    if (cmd<HELP){
+      notfound = (loc_exits[cmd]<0);
       cmd = (int)loc_exits[cmd];
-    } else if (notfound == 0){
+    } else if (cmd<END_OF_LIST){
       notfound = 1;
       if (process_cmd(cmd, loc_id)){
         notfound=0;

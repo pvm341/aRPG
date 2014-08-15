@@ -57,7 +57,7 @@
 
 1407925886 /home/paul/c/rpg/location.h
 
-1407993631 source:/home/paul/c/rpg/cmdpu.c
+1408063698 source:/home/paul/c/rpg/cmdpu.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -65,5 +65,5 @@
 	"location.h"
 	"cmdpu.h"
 
-1407995371 /home/paul/c/rpg/cmdpu.h
+1408036739 /home/paul/c/rpg/cmdpu.h
 
