@@ -3,9 +3,10 @@
 #include <string.h>
 
 #include "list.h"
-#include "location.h"
 #include "cmdpu.h"
+#include "location.h"
 
+extern acommand commands;
 tlocation dummy[] =  {
                         {1UL,{ 7,-1, 3,-1,-1,-1},"A cave", "Go south or get a torch and go north", NULL},
                         {2UL,{-1,-1,-1, 3,-1,-1},"This is the east dummy location", "West is the only way out",NULL},
@@ -21,7 +22,7 @@ tlocation dummy[] =  {
  * This dummy list display for proof of concept
  */
 
-int *display_location(const int loc_id){
+void display_location(const int loc_id){
   int c, d, i;
 
   fprintf(stdout,"%s\n",dummy[loc_id].description);
@@ -39,7 +40,6 @@ int *display_location(const int loc_id){
     d++;
   }
   fprintf(stdout,")\nWhat to do ?");
-  return dummy[loc_id].exits;
 }
 
 plocation get_loc(const int loc_id){

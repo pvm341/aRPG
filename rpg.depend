@@ -30,7 +30,7 @@
 	<string.h>
 	"list.h"
 
-1407949914 source:/home/paul/c/rpg/main.c
+1408089099 source:/home/paul/c/rpg/main.c
 	<stdio.h>
 	<stdlib.h>
 	"inventory.h"
@@ -47,7 +47,17 @@
 	"player.h"
 	"list.h"
 
-1407956569 source:/home/paul/c/rpg/location.c
+1408089079 source:/home/paul/c/rpg/location.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"list.h"
+	"cmdpu.h"
+	"location.h"
+
+1408089002 /home/paul/c/rpg/location.h
+
+1408090806 source:/home/paul/c/rpg/cmdpu.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -55,15 +65,5 @@
 	"location.h"
 	"cmdpu.h"
 
-1407925886 /home/paul/c/rpg/location.h
-
-1408063698 source:/home/paul/c/rpg/cmdpu.c
-	<stdio.h>
-	<stdlib.h>
-	<string.h>
-	"list.h"
-	"location.h"
-	"cmdpu.h"
-
-1408036739 /home/paul/c/rpg/cmdpu.h
+1408082894 /home/paul/c/rpg/cmdpu.h
 

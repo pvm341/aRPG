@@ -13,8 +13,6 @@ struct scommand {
 
 typedef struct scommand tcommand, acommand[], *pcommand, **dcommand;
 
-extern const acommand commands;
-
-int get_command(int loc_id,int *(*prompt_func)());
-int process_cmd(const int cmd, const int cur_loc);
+int get_command(int loc_id);
+int process_cmd(int cmd, const int cur_loc, char *args);
 #endif

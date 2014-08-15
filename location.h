@@ -12,7 +12,8 @@ typedef struct slocation tlocation, *plocation,  alocation[], **dlocation;
 
 extern alocation dummy;
 
-int *display_location(const int loc_id);
+
+void display_location(const int loc_id);
 plocation get_loc(const int loc_id);
 
 #endif
