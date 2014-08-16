@@ -49,7 +49,7 @@ const acommand commands =
       {LEAVE, "drop"},
       {QUIT,  "X"},
       {QUIT,  "Exit"},
-      {END_OF_LIST, "end of list"}
+      {END_OF_LIST, "<eol>"}
                             };
 
 static char *replace_strchr(char *str, char schr, char rchr){
@@ -60,16 +60,16 @@ static char *replace_strchr(char *str, char schr, char rchr){
   return str;
 }
 
-static CMDS process_cmd_line(char *cmd_str){
-  CMDS cmd;
+static int process_cmd_line(char *cmd_str){
+//  CMDS cmd = END_OF_LIST;
   int idx, notfound;
 
   cmd_str = replace_strchr(cmd_str, '\n','\0');
-#if LOCAL_DEBUG == 1
+#if LOCAL_DEBUG == 2
   printf("**Debug 1 cmd_str <%s>\n",cmd_str?cmd_str:"NULL");
 #endif
   cmd_str = replace_strchr(cmd_str, ' ','\0');
-#if LOCAL_DEBUG == 1
+#if LOCAL_DEBUG == 2
   printf("**Debug 2 cmd_str <%s>\n",cmd_str?cmd_str:"NULL");
 #endif
   // Now cmd_str is just the first word
@@ -79,43 +79,50 @@ static CMDS process_cmd_line(char *cmd_str){
     notfound = strcmp(cmd_str,commands[idx].cmdstr);
     if (notfound){
       idx++;
-    } else {
-      cmd = commands[idx].cmd_no;
+//    } else {
+//      cmd = commands[idx].cmd_no;
     }
   }
-  return cmd;
+#if LOCAL_DEBUG == 2
+  printf("**Debug 3 cmd <%s>\n",commands[idx].cmdstr);
+#endif
+  return idx;
 }
 
 static int find_command(const acommand commands, int cur_loc){
   char cmd_line[CMDLINELEN+1];
-  int  notfound=1, new_loc;
+  int  notfound=1, idx, new_loc;
   char *args;
   CMDS cmd;
   do {
     display_location(cur_loc);
     fgets(cmd_line,CMDLINELEN,stdin);
-    cmd = process_cmd_line(cmd_line);
-    if (GO == cmd) {
-      args = strchr(cmd_line,'\0');
-      args++;
-      cmd = process_cmd_line(args);
-    }
-    if (cmd<HELP){
-      new_loc = process_cmd(cmd,cur_loc,cmd_line);
-      notfound = new_loc== -END_OF_LIST;
-    } else if (cmd<END_OF_LIST){
-      new_loc = process_cmd(cmd, cur_loc, args);
-      notfound = new_loc != -1;
+    idx = process_cmd_line(cmd_line);
+    if (END_OF_LIST == idx){
+      notfound = 1;
+    } else {
+      cmd = commands[idx].cmd_no;
+      if (GO == cmd) {
+        args = strchr(cmd_line,'\0');
+        args++;
+        cmd = process_cmd_line(args);
+      }
+      if (cmd<HELP){
+        new_loc = process_cmd(cmd,cur_loc,cmd_line);
+        notfound = new_loc== -END_OF_LIST;
+      } else if (cmd<END_OF_LIST){
+        new_loc = process_cmd(cmd, cur_loc, args);
+        notfound = new_loc != -1;
+      }
     }
     cur_loc = notfound?cur_loc:new_loc;
-
   } while (notfound);
   return cur_loc;
 }
 
 int process_cmd(int cmd, const int cur_loc, char *cmd_line){
   plocation location = get_loc(cur_loc);
-  int i,ret_val=0;
+  int i,ret_val=-END_OF_LIST;
   switch(cmd){
     case QUIT:
       ret_val = -1;

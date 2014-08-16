@@ -7,6 +7,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include "gameobjects.h"
 #include "inventory.h"
 #include "player.h"
 #include "location.h"
@@ -45,6 +46,7 @@ int main(int argc, char** argv) {
   display_all_players();
   del_all_players();
   display_all_players();
+  display_items_list();
   loc_id = 3;
   do {
     loc_id = get_command(loc_id);
