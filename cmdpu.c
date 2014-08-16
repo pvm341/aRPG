@@ -24,7 +24,7 @@ const acommand commands =
       {TAKE,      "take"},
       {LEAVE,     "leave"},
       {QUIT,      "Quit"},
-      {GO,        "go"},
+//      {GO,        "go"},
       {SAVE,      "save"},
       {LOAD,      "load"},
       /* first of new commands go above here */
@@ -49,8 +49,8 @@ const acommand commands =
       {LEAVE, "drop"},
       {QUIT,  "X"},
       {QUIT,  "Exit"},
-      {END_OF_LIST, "<eol>"}
-                            };
+      {END_OF_LIST, NULL}
+    };
 
 static char *replace_strchr(char *str, char schr, char rchr){
   char *ptr = strchr(str,schr);
@@ -58,6 +58,30 @@ static char *replace_strchr(char *str, char schr, char rchr){
     *ptr=rchr;
   }
   return str;
+}
+
+static void unknown_cmd(FILE *file,char *s){
+  fprintf(file,"<");
+  if (file == stdout){
+    fprintf(file,"%c[35m",27);
+  }
+  fprintf(file,"%s",s);
+  if (file == stdout){
+    fprintf(file,"%c[39m",27);
+  }
+  fprintf(file,"> - not a valid command! help displays the list\n");
+}
+
+static void notreadyyet(FILE *file, CMDS cmd){
+  fprintf(file,"<");
+  if (file == stdout){
+    fprintf(file,"%c[36m",27);
+  }
+  fprintf(file, "%s",commands[cmd].cmdstr);
+  if (file == stdout){
+    fprintf(file,"%c[39m",27);
+  }
+  fprintf(file,"> - Not yet implemented\n");
 }
 
 static int process_cmd_line(char *cmd_str){
@@ -74,14 +98,10 @@ static int process_cmd_line(char *cmd_str){
 #endif
   // Now cmd_str is just the first word
   notfound = 1;
-  idx = 0;
-  while (notfound && commands[idx].cmd_no < END_OF_LIST){
-    notfound = strcmp(cmd_str,commands[idx].cmdstr);
-    if (notfound){
-      idx++;
-//    } else {
-//      cmd = commands[idx].cmd_no;
-    }
+  idx = -1;
+  while (notfound){
+    idx++;
+    notfound = !(NULL == commands[idx].cmdstr) && (strcmp(cmd_str,commands[idx].cmdstr));
   }
 #if LOCAL_DEBUG == 2
   printf("**Debug 3 cmd <%s>\n",commands[idx].cmdstr);
@@ -102,17 +122,19 @@ static int find_command(const acommand commands, int cur_loc){
       notfound = 1;
     } else {
       cmd = commands[idx].cmd_no;
-      if (GO == cmd) {
-        args = strchr(cmd_line,'\0');
-        args++;
-        cmd = process_cmd_line(args);
-      }
+//      if (GO == cmd) {
+//        args = strchr(cmd_line,'\0');
+//        args++;
+//        cmd = process_cmd_line(args);
+//      }
       if (cmd<HELP){
         new_loc = process_cmd(cmd,cur_loc,cmd_line);
         notfound = new_loc== -END_OF_LIST;
       } else if (cmd<END_OF_LIST){
         new_loc = process_cmd(cmd, cur_loc, args);
         notfound = new_loc != -1;
+      } else {
+        unknown_cmd(stdout, cmd_line);
       }
     }
     cur_loc = notfound?cur_loc:new_loc;
@@ -151,7 +173,7 @@ int process_cmd(int cmd, const int cur_loc, char *cmd_line){
       break;
 
     default:
-      fprintf(stdout,"<%s> - Not yet implemented\n",commands[cmd].cmdstr);
+      notreadyyet(stdout,cmd);
       break;
   }
   return ret_val;

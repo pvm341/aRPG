@@ -3,7 +3,8 @@
 
 typedef enum   {NORTH, EAST, SOUTH, WEST, UP, DOWN, HELP,
                 HINT, INVENTORY, LOOK, TAKE, LEAVE, QUIT,
-                GO, SAVE, LOAD,
+                /*GO, */
+                SAVE, LOAD,
                 END_OF_LIST } CMDS;
 
 struct scommand {
