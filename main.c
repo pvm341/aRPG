@@ -5,6 +5,10 @@
  * Created on 10 August 2014, 06:30
  */
 
+/* referenced pages
+ * https://en.wikipedia.org/wiki/ANSI_escape_code
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "gameobjects.h"
@@ -46,7 +50,9 @@ int main(int argc, char** argv) {
   display_all_players();
   del_all_players();
   display_all_players();
+#ifdef GAMEOBJECTS_H
   display_items_list();
+#endif
   loc_id = 3;
   do {
     loc_id = get_command(loc_id);

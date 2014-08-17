@@ -1,11 +1,14 @@
 #ifndef CMDPU_H
 #define CMDPU_H
 
-typedef enum   {NORTH, EAST, SOUTH, WEST, UP, DOWN, HELP,
+typedef enum  {
+                NORTH, EAST, SOUTH, WEST, UP, DOWN, HELP,
                 HINT, INVENTORY, LOOK, TAKE, LEAVE, QUIT,
                 /*GO, */
                 SAVE, LOAD,
-                END_OF_LIST } CMDS;
+                MAKE, TRADE,
+                END_OF_LIST
+              } CMDS;
 
 struct scommand {
   CMDS cmd_no;

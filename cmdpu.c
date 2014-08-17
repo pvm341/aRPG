@@ -27,7 +27,10 @@ const acommand commands =
 //      {GO,        "go"},
       {SAVE,      "save"},
       {LOAD,      "load"},
+      {MAKE,      "make"},
+      {TRADE,     "trade"},
       /* first of new commands go above here */
+      /* synonims of can be placed below here */
       {NORTH, "n"},
       {EAST,  "e"},
       {SOUTH, "s"},
@@ -49,6 +52,7 @@ const acommand commands =
       {LEAVE, "drop"},
       {QUIT,  "X"},
       {QUIT,  "Exit"},
+      /* this must be the last line of commands */
       {END_OF_LIST, NULL}
     };
 
@@ -167,7 +171,8 @@ int process_cmd(int cmd, const int cur_loc, char *cmd_line){
     case HELP:
       fprintf(stdout, "The commands/actions available are :-\n");
       for (i=0;commands[i].cmd_no<END_OF_LIST;i++){
-        fprintf(stdout,"%s%s",i>0 && commands[i+1].cmdstr?", ":!commands[i+1].cmdstr?" and ":"\0",commands[i].cmdstr);
+        fprintf(stdout,"%s",i>0 && commands[i+1].cmdstr?", ":!commands[i+1].cmdstr?" and ":"\0");
+        fprintf(stdout,"%c[33m%s%c[39m",27,commands[i].cmdstr,27);
       }
       fprintf(stdout,"\n");
       break;
