@@ -8,11 +8,18 @@
 #include "player.h"
 
 extern acommand commands;
+typedef _Bool boolean;
+
+boolean truth = 1;
 
 static pll the_world;
 
 static int cmp_loc_id(const plocation item1, const int *item2){
   return item1->id - *item2;
+}
+
+static int cmp_loc_name(const plocation item1, const char *item2){
+  return strcmp(item1->name,item2);
 }
 
 static int find_highest_id(){
@@ -61,6 +68,22 @@ static int link_locations(const int id1, const int id2, const int link1to2){
     plocation l1 = loc1->data, l2 = loc2->data;
     l1->exits[link1to2] = id2;
     l2->exits[opposite_direction(link1to2)] = id1;
+    error = 0;
+  }
+  return error;
+}
+
+static int link_by_names(const char *name1,
+                         const char *name2,
+                         const int link1to2){
+  pll loc1, loc2;
+  int error = 1;
+  loc1 = find_item(the_world,name1,cmp_loc_name);
+  loc2 = find_item(the_world,name2,cmp_loc_name);
+  if (NULL != loc1 && NULL != loc2){
+    plocation l1 = loc1->data, l2 = loc2->data;
+    l1->exits[link1to2] = l2->id;
+    l2->exits[opposite_direction(link1to2)] = l1->id;
     error = 0;
   }
   return error;
@@ -157,7 +180,7 @@ void genesis(){
                          "cross to the East side");
   strcpy(loc.name,"WestRiverBank");
   add_location(loc);
-  link_locations(9,6,EAST);
+  link_by_names("WestRiverBank","EastRiverBank",EAST);
 }
 
 void save_the_world(){
