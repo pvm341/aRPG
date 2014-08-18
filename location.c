@@ -104,8 +104,10 @@ plocation get_loc(const int loc_id){
 void genesis(){
   tlocation loc;
   loc.items_list=NULL;
-  strcpy(loc.description,"This is the central dummy location");
-  strcpy(loc.hint,"All exits available");
+  strcpy(loc.description,"Ground floor of Central Building");
+  strcpy(loc.name,"CentralBuildingGF");
+  loc.monsters = NULL;
+  loc.players = NULL;
   loc.id = find_highest_id();
   loc.exits[NORTH]=-1;
   loc.exits[EAST]=-1;
@@ -115,40 +117,47 @@ void genesis(){
   loc.exits[UP]=-1;
   add_location(loc);
   loc.id = find_highest_id();
-  strcpy(loc.description,"A cave");
-  strcpy(loc.hint,"Go south or get a torch and go north");
+  strcpy(loc.description,"An entrance to a dark cave");
+  strcpy(loc.name,"CaveEntrance");
   add_location(loc);
   link_locations(1,2,NORTH);
   loc.id = find_highest_id();
-  strcpy(loc.description,"a dark secion of a cave");
-  strcpy(loc.hint,"Light a torch or go south");
+  strcpy(loc.description,"Dark of a cave");
+  strcpy(loc.name,"DarkCave");
   add_location(loc);
   link_locations(2,3,NORTH);
   loc.id = find_highest_id();
-  strcpy(loc.description,"This is the east dummy location");
-  strcpy(loc.hint,"West is the only way out");
+  strcpy(loc.description,"A forest of evergreen");
+  strcpy(loc.name,"EverGreenForest");
   add_location(loc);
   link_locations(1,4,EAST);
   loc.id = find_highest_id();
-  strcpy(loc.description,"This is the south dummy location");
-  strcpy(loc.hint,"North is the only way out");
+  strcpy(loc.description,"A sandy beach on a fresh water lake");
+  strcpy(loc.name,"SandyBeach");
   add_location(loc);
   link_locations(1,5,SOUTH);
   loc.id = find_highest_id();
-  strcpy(loc.description,"This is the west dummy location");
-  strcpy(loc.hint,"East is the only way out");
+  strcpy(loc.description,"Eastern river bank, a rope bridge is available to "
+                         "cross to the West side");
+  strcpy(loc.name,"EastRiverBank");
   add_location(loc);
   link_locations(1,6,WEST);
   loc.id = find_highest_id();
-  strcpy(loc.description,"This is the up dummy location");
-  strcpy(loc.hint,"Down is the only way out");
+  strcpy(loc.description,"First floor of the central building");
+  strcpy(loc.name,"CentralBuilding1F");
   add_location(loc);
   link_locations(1,7,UP);
   loc.id = find_highest_id();
-  strcpy(loc.description,"This is the down dummy location");
-  strcpy(loc.hint,"Up is the only way out");
+  strcpy(loc.description,"Basement of the central building");
+  strcpy(loc.name,"CentralBuildingBa");
   add_location(loc);
   link_locations(1,8,DOWN);
+  loc.id = find_highest_id();
+  strcpy(loc.description,"Western river bank, a rope bridge is available to "
+                         "cross to the East side");
+  strcpy(loc.name,"WestRiverBank");
+  add_location(loc);
+  link_locations(9,6,EAST);
 }
 
 void save_the_world(){

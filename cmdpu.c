@@ -18,7 +18,7 @@ const acommand commands =
       {UP,        "up"},
       {DOWN,      "down"},
       {HELP,      "help"},
-      {HINT,      "hint"},
+      //{HINT,      "hint"},
       {INVENTORY, "inventory"},
       {LOOK,      "look"},
       {TAKE,      "take"},
@@ -38,7 +38,7 @@ const acommand commands =
       {UP,    "u"},
       {DOWN,  "d"},
       {HELP,  "?"},
-      {HINT,  "h"},
+      //{HINT,  "h"},
       {LOOK,  "l"},
       {TAKE,  "t"},
       {LEAVE, "p"},
@@ -164,10 +164,9 @@ int process_cmd(int cmd, const int cur_loc, char *cmd_line){
         ret_val = -END_OF_CMDS;
       }
       break;
-    case HINT:
-      fprintf(stdout,"%s\n",location->hint);
-      break;
-
+//    case HINT:
+//      fprintf(stdout,"%s\n",location->hint);
+//      break;
     case HELP:
       fprintf(stdout, "The commands/actions available are :-\n");
       for (i=0;commands[i].cmd_no<END_OF_CMDS;i++){

@@ -1,11 +1,15 @@
 #ifndef LOCATIONS_H
 #define LOCATIONS_H
 
+#define MAX_LOC_NAME_SIZE 21
+#define MAX_LOC_DESC_SIZE 1024
 struct slocation {
-int id, exits[6];
-char description[1024];
-char hint[141];
-pll items_list;
+  int id, exits[6];
+  char name[MAX_LOC_NAME_SIZE];
+  char description[MAX_LOC_DESC_SIZE];
+  pll items_list;
+  pll players;
+  pll monsters;
 };
 
 typedef struct slocation tlocation, *plocation,  alocation[], **dlocation;

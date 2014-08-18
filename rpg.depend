@@ -48,7 +48,7 @@
 	"player.h"
 	"list.h"
 
-1408384064 source:/home/paul/c/rpg/location.c
+1408395875 source:/home/paul/c/rpg/location.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -57,9 +57,9 @@
 	"location.h"
 	"player.h"
 
-1408383631 /home/paul/c/rpg/location.h
+1408394765 /home/paul/c/rpg/location.h
 
-1408387318 source:/home/paul/c/rpg/cmdpu.c
+1408394865 source:/home/paul/c/rpg/cmdpu.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
