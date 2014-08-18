@@ -7,7 +7,7 @@ typedef enum  {
                 /*GO, */
                 SAVE, LOAD,
                 MAKE, TRADE,
-                END_OF_LIST
+                END_OF_CMDS=256
               } CMDS;
 
 struct scommand {

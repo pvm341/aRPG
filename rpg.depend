@@ -6,7 +6,7 @@
 
 1407530206 /home/paul/c/rpg/currencylsd.h
 
-1407824973 source:/home/paul/c/rpg/inventory.c
+1408303140 source:/home/paul/c/rpg/inventory.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -30,7 +30,7 @@
 	<string.h>
 	"list.h"
 
-1408269621 source:/home/paul/c/rpg/main.c
+1408384162 source:/home/paul/c/rpg/main.c
 	<stdio.h>
 	<stdlib.h>
 	"gameobjects.h"
@@ -48,17 +48,18 @@
 	"player.h"
 	"list.h"
 
-1408115912 source:/home/paul/c/rpg/location.c
+1408384064 source:/home/paul/c/rpg/location.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	"list.h"
 	"cmdpu.h"
 	"location.h"
+	"player.h"
 
-1408089002 /home/paul/c/rpg/location.h
+1408383631 /home/paul/c/rpg/location.h
 
-1408258534 source:/home/paul/c/rpg/cmdpu.c
+1408387318 source:/home/paul/c/rpg/cmdpu.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -66,12 +67,12 @@
 	"location.h"
 	"cmdpu.h"
 
-1408257884 /home/paul/c/rpg/cmdpu.h
+1408387484 /home/paul/c/rpg/cmdpu.h
 
-1408276450 source:/home/paul/c/rpg/gameobjects.c
+1408306838 source:/home/paul/c/rpg/gameobjects.c
 	<stdio.h>
 	<stdlib.h>
 	"gameobjects.h"
 
-1408166848 /home/paul/c/rpg/gameobjects.h
+1408306740 /home/paul/c/rpg/gameobjects.h
 

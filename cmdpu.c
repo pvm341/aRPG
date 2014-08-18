@@ -53,7 +53,7 @@ const acommand commands =
       {QUIT,  "X"},
       {QUIT,  "Exit"},
       /* this must be the last line of commands */
-      {END_OF_LIST, NULL}
+      {END_OF_CMDS, NULL}
     };
 
 static char *replace_strchr(char *str, char schr, char rchr){
@@ -122,7 +122,7 @@ static int find_command(const acommand commands, int cur_loc){
     display_location(cur_loc);
     fgets(cmd_line,CMDLINELEN,stdin);
     idx = process_cmd_line(cmd_line);
-    if (END_OF_LIST == idx){
+    if (END_OF_CMDS == idx){
       notfound = 1;
     } else {
       cmd = commands[idx].cmd_no;
@@ -133,8 +133,8 @@ static int find_command(const acommand commands, int cur_loc){
 //      }
       if (cmd<HELP){
         new_loc = process_cmd(cmd,cur_loc,cmd_line);
-        notfound = new_loc== -END_OF_LIST;
-      } else if (cmd<END_OF_LIST){
+        notfound = new_loc == -END_OF_CMDS;
+      } else if (cmd<END_OF_CMDS){
         new_loc = process_cmd(cmd, cur_loc, args);
         notfound = new_loc != -1;
       } else {
@@ -148,7 +148,7 @@ static int find_command(const acommand commands, int cur_loc){
 
 int process_cmd(int cmd, const int cur_loc, char *cmd_line){
   plocation location = get_loc(cur_loc);
-  int i,ret_val=-END_OF_LIST;
+  int i,ret_val=-END_OF_CMDS;
   switch(cmd){
     case QUIT:
       ret_val = -1;
@@ -161,7 +161,7 @@ int process_cmd(int cmd, const int cur_loc, char *cmd_line){
     case DOWN:
       ret_val = location->exits[cmd];
       if (ret_val==-1){
-        ret_val = -END_OF_LIST;
+        ret_val = -END_OF_CMDS;
       }
       break;
     case HINT:
@@ -170,7 +170,7 @@ int process_cmd(int cmd, const int cur_loc, char *cmd_line){
 
     case HELP:
       fprintf(stdout, "The commands/actions available are :-\n");
-      for (i=0;commands[i].cmd_no<END_OF_LIST;i++){
+      for (i=0;commands[i].cmd_no<END_OF_CMDS;i++){
         fprintf(stdout,"%s",i>0 && commands[i+1].cmdstr?", ":!commands[i+1].cmdstr?" and ":"\0");
         fprintf(stdout,"%c[33m%s%c[39m",27,commands[i].cmdstr,27);
       }

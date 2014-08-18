@@ -15,5 +15,7 @@ extern alocation dummy;
 
 void display_location(const int loc_id);
 plocation get_loc(const int loc_id);
-
+void add_location(tlocation a_new_location);
+void armageddon();
+void genesis();
 #endif

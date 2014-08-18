@@ -22,8 +22,9 @@
  */
 FILE *nul;
 int main(int argc, char** argv) {
-  int loc_id;
+  int loc_id=1;
   nul  = fopen("/dev/null","w");
+  genesis();
   tinventoryitem the_inv_item;
   the_inv_item = create_inv_item("Iron Axe",83);
   add_player("Paul");
@@ -48,15 +49,14 @@ int main(int argc, char** argv) {
   display_all_players();
   add_player("Fred");
   display_all_players();
-  del_all_players();
-  display_all_players();
 #ifdef GAMEOBJECTS_H
   display_items_list();
 #endif
-  loc_id = 3;
+  loc_id = 1;
   do {
     loc_id = get_command(loc_id);
   } while(loc_id>=0);
+  armageddon();
   fclose(nul);
   return (EXIT_SUCCESS);
 }
