@@ -16,7 +16,9 @@ $ make
 $ ./aRPG
 ~~~~~~~~~~~~~~~~~
 codeblocks method
-
+1. Install codeblocks
+2. It will automatically detect if you have gcc, and if you have g++
+3. File -> Open the cbp in the source folder
 
 
 Commands
