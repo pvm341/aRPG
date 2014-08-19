@@ -197,7 +197,7 @@ static int game_loop(const acommand commands, int cur_loc){
 				for(int j = 0, accum = 0;j < strlen(cmd_line); j++)
 				{
 					accum++;
-					if(cmd_line[j] == ";"){
+					if(strcmp(cmd_line[j],";")){
 						run_cmd(cmd_line[j]);
 						accum = 0;
 					}
