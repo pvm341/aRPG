@@ -29,6 +29,7 @@ const acommand commands =
       {LOAD,      "load"},
       {MAKE,      "make"},
       {TRADE,     "trade"},
+
       /* first of new commands go above here */
       /* synonims of can be placed below here */
       {NORTH, "n"},
@@ -121,6 +122,7 @@ static int find_command(const acommand commands, int cur_loc){
   do {
     display_location(cur_loc);
     fgets(cmd_line,CMDLINELEN,stdin);
+
     idx = process_cmd_line(cmd_line);
     if (END_OF_CMDS == idx){
       notfound = 1;
@@ -146,9 +148,103 @@ static int find_command(const acommand commands, int cur_loc){
   return cur_loc;
 }
 
+static int game_loop(const acommand commands, int cur_loc){
+    char cmd_line[CMDLINELEN+1];
+    int  running=1, idx, new_loc;
+    char *args;
+    CMDS cmd;
+    do {
+        /* Display the current location before and after user input has been taken */
+        display_location(cur_loc);
+        /* Get the user input */
+        fgets(cmd_line,CMDLINELEN,stdin);
+        /* Clean the command for parsing */
+        clean_cmd_line(cmd_line);
+        /* Parse the command, an example: w;e;s;2w;u;dd2w; */
+        
+        /* Handle quit command logic here. This is to simplify the message passing for the game loop. */
+
+        if(cmd_line == "quit"){
+            // todo: ask if the user is sure
+            printf("Are you sure? Type yes or no\n");
+            fgets(cmd_line,CMDLINELEN,stdin);
+            clean_cmd_line(cmd_line);
+            if(cmd_line == "yes"){
+                running = 0;
+                break;
+            } else if (cmd_line == "no"){
+                display_location(cur_loc);
+                fgets(cmd_line,CMDLINELEN,stdin);
+                clean_cmd_line(cmd_line);
+            }
+        }
+
+        /* Check for standard word notation with no parameters, such as: north */
+        
+        if(find_command(cmd_line)){
+            process_cmd(cmd_line);
+        } else if (find_command_with_parameters(cmd_line)){
+            /* Check for standard word notation with parameters, such as: look west, go north, or scan east */
+            // todo: implement detection and parsing off this
+
+        } else {
+
+            /* Check for speed walking notations if the basic notations have not been found */
+            for(int index = 0; index < strlen(cmd_line); index++)
+            {
+                /*  Check for standard word with semicolon notation, such as: north;north;look;west; */
+                // todo: this needs a better implementation, mine does not work!
+                for(int j = 0, accum = 0;j < strlen(cmd_line); j++)
+                {
+                    accum++;
+                    if(cmd_line[j] == ";"){
+                        process_cmd(cmd_line[j]);
+                        accum = 0;
+                    }
+                }
+
+                /* Check for number command notation, such as: 5n */
+                if(isdigit(cmd_line[index])){
+                    for(int j = 0; j < cmd_line[index]; j++)
+                        process_cmd(cmd_line[index+1]);
+                    index++;
+                }
+
+                /* Check for semicolon command notation, such as: w;n;s;e;e;w; */
+                if(cmd_line[index] == ";"){
+                    // skip it
+                    index++;
+                }
+
+                /* Check for single character movement notation */
+                // commentary: probably this check is unnecessary
+                int tmp = cmd_line[index];
+                if(tmp == "n" || tmp == "e" || tmp == "s" || tmp == "w" || tmp == "u" || tmp == "d"){
+
+                }
+
+                if(isalpha(cmd_line[index])){
+                    process_cmd(cmd_line[index+1]);
+                }
+            }
+        }
+    } while (running);
+    return cur_loc;
+}
+
+int clean_cmd_line(char * command)
+{
+    // remove new line characters
+    // remove \0 characters 
+}
+
+
+
+
 int process_cmd(int cmd, const int cur_loc, char *cmd_line){
   plocation location = get_loc(cur_loc);
   int i,ret_val=-END_OF_CMDS;
+
   switch(cmd){
     case QUIT:
       ret_val = -1;
