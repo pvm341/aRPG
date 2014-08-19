@@ -10,6 +10,10 @@ MIT License. Copyright 2014 Paul Massey.
 Instructions
 =====
 
+### MS Windows
+~~~~~~~~~~
+
+
 ### gcc method
 ~~~~~~~~~~
 $ make
