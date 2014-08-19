@@ -43,21 +43,21 @@ Commands
 | Interaction Commands | Parameters | Description |
 | ------------- | ----------- | ----------- |
 | look          |             | Look at room |
-| look          | <object>    | Look at target |
-| look          | <direction> | Look at direction |
-| get           | <object>    | Get the object |
+| look          | object    | Look at target |
+| look          | direction | Look at direction |
+| get           | object    | Get the object |
 | inv           |             | List inventory |
-| drop          | <object>    | Drop the object |
+| drop          | object    | Drop the object |
 | sleep         |             | Fall asleep |
-| sleep         | <time>      | Fall asleep until time |
+| sleep         | time      | Fall asleep until time |
 
 | Game Commands | Parameters | Description |
 | ------------- | ----------- | ----------- |
 | quit          |             | Quit the game|
 | help          |             | List all commands |
 | ?             |             | Same as help |
-| save          | <filename>  | Save the gamestate as ... |
-| load          | <filename>  | Load the gamestate | 
+| save          | filename  | Save the gamestate as ... |
+| load          | filename  | Load the gamestate | 
 
 | Speedwalk     | Parameters  | Description |
 | ------------- | ----------- | ----------- |
