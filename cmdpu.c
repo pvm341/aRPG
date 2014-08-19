@@ -182,7 +182,7 @@ static int game_loop(const acommand commands, int cur_loc){
         /* Check for standard word notation with no parameters, such as: north */
         
         if(find_command(cmd_line)){
-            process_cmd(cmd_line);
+            run_cmd(cmd_line);
         } else if (find_command_with_parameters(cmd_line)){
             /* Check for standard word notation with parameters, such as: look west, go north, or scan east */
             // todo: implement detection and parsing off this
@@ -198,7 +198,7 @@ static int game_loop(const acommand commands, int cur_loc){
                 {
                     accum++;
                     if(cmd_line[j] == ";"){
-                        process_cmd(cmd_line[j]);
+                        run_cmd(cmd_line[j]);
                         accum = 0;
                     }
                 }
@@ -210,7 +210,7 @@ static int game_loop(const acommand commands, int cur_loc){
                 /* Check for number command notation, such as: 5n */
                 if(isdigit(cmd_line[index])){
                     for(int j = 0; j < cmd_line[index]; j++)
-                        process_cmd(cmd_line[index+1]);
+                        run_cmd(cmd_line[index+1]);
                     index++;
                 }
 
@@ -227,13 +227,19 @@ static int game_loop(const acommand commands, int cur_loc){
 
                 }
 
+                // commentary: I cant remember why this exists
                 if(isalpha(cmd_line[index])){
-                    process_cmd(cmd_line[index+1]);
+                    run_cmd(cmd_line[index+1]);
                 }
             }
         }
     } while (running);
     return cur_loc;
+}
+
+int run_cmd(char * command)
+{
+    return 0;
 }
 
 int clean_cmd_line(char * command)
