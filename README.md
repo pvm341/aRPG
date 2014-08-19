@@ -40,10 +40,8 @@ Commands
 | ------------- | ----------- | ----------- |
 | 4n            |             | Go 4 North  |
 | 2e4sw         |             | Go 2 East, 4 South, 1 West     |
-| s             |             | Go South    |
-| w             |             | Go West     |
-| u             |             | Go Up       |
-| d             |             | Go Down     |
+| s;w;4s        |             | Go South, West, then 4 South    |
+| look east; n10wd; scan d;              |             | Look east, go north, then 10 west, then down, then scan down     |
 
 
 Authors
