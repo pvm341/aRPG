@@ -14,9 +14,8 @@ gcc method
 ~~~~~~~~~~
 $ make
 $ ./aRPG
-
-codeblocks method
 ~~~~~~~~~~~~~~~~~
+codeblocks method
 
 
 
