@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
 #include "list.h"
 #include "location.h"
@@ -148,23 +149,50 @@ static int find_command(const acommand commands, int cur_loc){
   return cur_loc;
 }
 
+/* Runs a command. Returns 0 if it succeeded. Returns 1 if it failed */
+
+int run_cmd(char * command)
+{
+  return 0;
+}
+
+/* Cleans the command line input.*/
+
+int clean_cmd_line(char * command)
+{
+  // remove new line characters
+  // remove \0 characters 
+  return 0;
+}
+
+int find_the_command(char *command)
+{
+  return 0;
+}
+
+int find_command_with_parameters(char *command)
+{
+    return 0;
+}
+
 static int game_loop(const acommand commands, int cur_loc){
   char cmd_line[CMDLINELEN+1];
   int  running=1, idx, new_loc;
   char *args;
   CMDS cmd;
   do {
-    /* Display the current location before and after user input has been taken */
-  display_location(cur_loc);
+    /* Display the current location before and after user input */
+    display_location(cur_loc);
     /* Get the user input */
     fgets(cmd_line,CMDLINELEN,stdin);
     /* Clean the command for parsing */
     clean_cmd_line(cmd_line);
     /* Parse the command, an example: w;e;s;2w;u;dd2w; */
     
-    /* Handle quit command logic here. This is to simplify the message passing for the game loop. */
+    /* Handle quit command logic here.
+     * This is to simplify the message passing for the game loop. */
 
-    if(cmd_line == "quit"){
+    if(strcmp(cmd_line, "quit")){
       // todo: ask if the user is sure
       printf("Are you sure? Type yes or no\n");
       fgets(cmd_line,CMDLINELEN,stdin);
@@ -181,18 +209,20 @@ static int game_loop(const acommand commands, int cur_loc){
 
     /* Check for standard word notation with no parameters, such as: north */
     
-    if(find_command(cmd_line)){
+    if(find_the_command(cmd_line)){
       run_cmd(cmd_line);
     } else if (find_command_with_parameters(cmd_line)){
-      /* Check for standard word notation with parameters, such as: look west, go north, or scan east */
+      /* Check for standard word notation with parameters, such as: look west */
       // todo: implement detection and parsing off this
 
     } else {
 
-      /* Check for speed walking notations if the basic notations have not been found */
+      /* Check for speed walking notations 
+       * if the basic notations have not been found */
       for(int index = 0; index < strlen(cmd_line); index++)
       {
-        /*  Check for standard word with semicolon notation, such as: north;north;look;west; */
+        /*  Check for standard word with semicolon notation,
+         *  such as: north;north;look;west; */
         // todo: this needs a better implementation, mine does not work!
         for(int j = 0, accum = 0;j < strlen(cmd_line); j++)
         {
@@ -203,9 +233,13 @@ static int game_loop(const acommand commands, int cur_loc){
           }
         }
 
-        /* Check for standard word with semicolon notation with parameters, such as: look west; north; scan east; */
+        /* Check for standard word with semicolon notation with parameters,
+         * such as: look west; north; scan east; */
         // commentary: whoever does this is hardcore
-        // todo: requires implementation. also, handling spaces correctly. A space before a command must be ignored. A space after a command must consider a parameter if it exists. "n n n n n" is not valid syntax
+        // todo: requires implementation. also, handling spaces correctly.
+        // A space before a command must be ignored.
+        // A space after a command must consider a parameter if it exists.
+        // "n n n n n" is not valid syntax
 
         /* Check for number command notation, such as: 5n */
         if(isdigit(cmd_line[index])){
@@ -228,21 +262,6 @@ static int game_loop(const acommand commands, int cur_loc){
   } while (running);
   return cur_loc;
 }
-/* Runs a command. Returns 0 if it succeeded. Returns 1 if it failed */
-
-int run_cmd(char * command)
-{
-  return 0;
-}
-
-/* Cleans the command line input. Returns 0 if it succeeded. Returns 1 if it failed. */
-
-int clean_cmd_line(char * command)
-{
-  // remove new line characters
-  // remove \0 characters 
-}
-
 
 
 
