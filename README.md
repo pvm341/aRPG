@@ -34,6 +34,17 @@ Commands
 | w             |             | Go West     |
 | u             |             | Go Up       |
 | d             |             | Go Down     |
+| quit          |             | Quit the game| 
+
+| Speedwalk     | Parameters  | Description |
+| ------------- | ----------- | ----------- |
+| 4n            |             | Go 4 North  |
+| 2e4sw         |             | Go 2 East, 4 South, 1 West     |
+| s             |             | Go South    |
+| w             |             | Go West     |
+| u             |             | Go Up       |
+| d             |             | Go Down     |
+
 
 Authors
 =====
