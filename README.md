@@ -43,6 +43,7 @@ Commands
 | s;w;4s        |             | Go South, West, then 4 South    |
 | look east; n10wd; scan d;              |             | Look east, go north, then 10 west, then down, then scan down     |
 
+So, you need to use semicolon notation in order to handle command parameters.
 
 Authors
 =====
