@@ -31,7 +31,7 @@ $ ./aRPG
 Commands
 =====
 
-| Command       | Parameters  | Description |
+| Movement Commands | Parameters  | Description |
 | ------------- | ----------- | ----------- |
 | n             |             | Go North    |
 | e             |             | Go East     |
@@ -39,7 +39,25 @@ Commands
 | w             |             | Go West     |
 | u             |             | Go Up       |
 | d             |             | Go Down     |
-| quit          |             | Quit the game| 
+
+| Interaction Commands | Parameters | Description |
+| ------------- | ----------- | ----------- |
+| look          |             | Look at room |
+| look          | <object>    | Look at target |
+| look          | <direction> | Look at direction |
+| get           | <object>    | Get the object |
+| inv           |             | List inventory |
+| drop          | <object>    | Drop the object |
+| sleep         |             | Fall asleep |
+| sleep         | <time>      | Fall asleep until time |
+
+| Game Commands | Parameters | Description |
+| ------------- | ----------- | ----------- |
+| quit          |             | Quit the game|
+| help          |             | List all commands |
+| ?             |             | Same as help |
+| save          | <filename>  | Save the gamestate as ... |
+| load          | <filename>  | Load the gamestate | 
 
 | Speedwalk     | Parameters  | Description |
 | ------------- | ----------- | ----------- |
