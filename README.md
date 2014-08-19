@@ -12,7 +12,8 @@ Instructions
 
 ### MS Windows
 ~~~~~~~~~~
-
+You will need to use codeblocks or some other IDE.
+~~~~~~~~~~
 
 ### gcc method
 ~~~~~~~~~~
