@@ -9,7 +9,28 @@ MIT License. Copyright 2014 Paul Massey.
 
 Instructions
 =====
-A makefile needs to be made.
+
+gcc method
+~~~~~~~~~~
+$ make
+$ ./aRPG
+
+codeblocks method
+~~~~~~~~~~~~~~~~~
+
+
+
+Commands
+=====
+
+| Command       | Parameters  | Description |
+| ------------- | ----------- | ----------- |
+| n             |             | Go North    |
+| e             |             | Go East     |
+| s             |             | Go South    |
+| w             |             | Go West     |
+
+
 
 Authors
 =====
