@@ -10,13 +10,13 @@ MIT License. Copyright 2014 Paul Massey.
 Instructions
 =====
 
-## gcc method
+### gcc method
 ~~~~~~~~~~
 $ make
 $ ./aRPG
 ~~~~~~~~~~~~~~~~~
 
-## codeblocks method
+### codeblocks method
 
 1. Install codeblocks
 2. It will automatically detect if you have gcc, and if you have g++
