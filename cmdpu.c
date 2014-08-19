@@ -151,14 +151,14 @@ static int find_command(const acommand commands, int cur_loc){
 
 /* Runs a command. Returns 0 if it succeeded. Returns 1 if it failed */
 
-int run_cmd(char * command)
+int run_cmd(char *command)
 {
   return 0;
 }
 
 /* Cleans the command line input.*/
 
-int clean_cmd_line(char * command)
+int clean_cmd_line(char *command)
 {
   // remove new line characters
   // remove \0 characters 
@@ -227,8 +227,8 @@ static int game_loop(const acommand commands, int cur_loc){
         for(int j = 0, accum = 0;j < strlen(cmd_line); j++)
         {
           accum++;
-          if(strcmp(cmd_line[j],";")){
-            run_cmd(cmd_line[j]);
+          if(cmd_line[j]==';'){
+            //run_cmd(cmd_line[j]);
             accum = 0;
           }
         }
@@ -244,18 +244,18 @@ static int game_loop(const acommand commands, int cur_loc){
         /* Check for number command notation, such as: 5n */
         if(isdigit(cmd_line[index])){
           for(int j = 0; j < cmd_line[index]; j++)
-            run_cmd(cmd_line[index+1]);
+            run_cmd(&cmd_line[index+1]);
           index++;
         }
 
         /* Check for semicolon command notation, such as: w;n;s;e;e;w; */
-        if(strcmp(cmd_line[index],";")){
+        if(cmd_line[index]==';'){
           // skip it
           index++;
         }
         /* If it is just a character command to be run, such as n */
         if(isalpha(cmd_line[index])){
-          run_cmd(cmd_line[index+1]);
+          run_cmd(&cmd_line[index+1]);
         }
       }
     }
