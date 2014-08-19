@@ -203,6 +203,10 @@ static int game_loop(const acommand commands, int cur_loc){
                     }
                 }
 
+                /* Check for standard word with semicolon notation with parameters, such as: look west; north; scan east; */
+                // commentary: whoever does this is hardcore
+                // todo: requires implementation. also, handling spaces correctly. A space before a command must be ignored. A space after a command must consider a parameter if it exists. "n n n n n" is not valid syntax
+
                 /* Check for number command notation, such as: 5n */
                 if(isdigit(cmd_line[index])){
                     for(int j = 0; j < cmd_line[index]; j++)

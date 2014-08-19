@@ -32,8 +32,8 @@ Commands
 | e             |             | Go East     |
 | s             |             | Go South    |
 | w             |             | Go West     |
-
-
+| u             |             | Go Up       |
+| d             |             | Go Down     |
 
 Authors
 =====
