@@ -1,0 +1,20 @@
+# record types
+# 1 = location, 2 = link, 3 = items, 4 = monsters, 5 = players
+# location = name, description
+1,"CentralBuildingGF","Ground floor of Central Building"
+1,"CaveEntrance","An entrance to a dark cave"
+2,"CentralBuildingGF","CaveEntrance",north
+1,"DarkCave","Dark of a cave"
+2,"CaveEntrance","DarkCave",north
+1,"EverGreenForest","An ever green forest"
+2,"CentralBuildingGF","EverGreenForest",east
+1,"SandyBeach","A sandy beach on a fresh water lake"
+2,"CentralBuildingGF","SandyBeach",south
+1,"EastRiverBank","Eastern river bank, a rope bridge is available to cross to the West side"
+2,"CentralBuildingGF","EastRiverBank",west
+1,"CentralBuilding1F","First floor of the central building"
+2,"CentralBuildingGF","CentralBuilding1F",up
+1,"CentralBuildingBa","Basement of the central building"
+2,"CentralBuildingGF","CentralBuildingBa",down
+1,"WestRiverBank","Western river bank, a rope bridge is available to cross to the East side"
+2,"WestRiverBank","EastRiverBank",east

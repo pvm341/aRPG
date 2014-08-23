@@ -35,10 +35,18 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="cmdpu.h" />
+		<Unit filename="csvdata.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="csvdata.h" />
 		<Unit filename="currencylsd.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="currencylsd.h" />
+		<Unit filename="gameobjects.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="gameobjects.h" />
 		<Unit filename="inventory.c">
 			<Option compilerVar="CC" />
 		</Unit>

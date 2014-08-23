@@ -61,7 +61,7 @@ const acommand commands =
 static char *replace_strchr(char *str, char schr, char rchr){
   char *ptr = strchr(str,schr);
   if (ptr){
-  *ptr=rchr;
+    *ptr=rchr;
   }
   return str;
 }
@@ -69,11 +69,11 @@ static char *replace_strchr(char *str, char schr, char rchr){
 static void unknown_cmd(FILE *file,char *s){
   fprintf(file,"<");
   if (file == stdout){
-  fprintf(file,"%c[35m",27);
+    fprintf(file,"%c[35m",27);
   }
   fprintf(file,"%s",s);
   if (file == stdout){
-  fprintf(file,"%c[39m",27);
+    fprintf(file,"%c[39m",27);
   }
   fprintf(file,"> - not a valid command! help displays the list\n");
 }
@@ -81,17 +81,16 @@ static void unknown_cmd(FILE *file,char *s){
 static void notreadyyet(FILE *file, CMDS cmd){
   fprintf(file,"<");
   if (file == stdout){
-  fprintf(file,"%c[36m",27);
+    fprintf(file,"%c[36m",27);
   }
   fprintf(file, "%s",commands[cmd].cmdstr);
   if (file == stdout){
-  fprintf(file,"%c[39m",27);
+    fprintf(file,"%c[39m",27);
   }
   fprintf(file,"> - Not yet implemented\n");
 }
 
 static int process_cmd_line(char *cmd_str){
-//  CMDS cmd = END_OF_LIST;
   int idx, notfound;
 
   cmd_str = replace_strchr(cmd_str, '\n','\0');
@@ -161,7 +160,7 @@ int run_cmd(char *command)
 int clean_cmd_line(char *command)
 {
   // remove new line characters
-  // remove \0 characters 
+  // remove \0 characters
   return 0;
 }
 
@@ -188,7 +187,7 @@ static int game_loop(const acommand commands, int cur_loc){
     /* Clean the command for parsing */
     clean_cmd_line(cmd_line);
     /* Parse the command, an example: w;e;s;2w;u;dd2w; */
-    
+
     /* Handle quit command logic here.
      * This is to simplify the message passing for the game loop. */
 
@@ -208,7 +207,7 @@ static int game_loop(const acommand commands, int cur_loc){
     }
 
     /* Check for standard word notation with no parameters, such as: north */
-    
+
     if(find_the_command(cmd_line)){
       run_cmd(cmd_line);
     } else if (find_command_with_parameters(cmd_line)){
@@ -217,15 +216,13 @@ static int game_loop(const acommand commands, int cur_loc){
 
     } else {
 
-      /* Check for speed walking notations 
+      /* Check for speed walking notations
        * if the basic notations have not been found */
-      for(int index = 0; index < strlen(cmd_line); index++)
-      {
+      for(int index = 0; index < strlen(cmd_line); index++){
         /*  Check for standard word with semicolon notation,
          *  such as: north;north;look;west; */
         // todo: this needs a better implementation, mine does not work!
-        for(int j = 0, accum = 0;j < strlen(cmd_line); j++)
-        {
+        for(int j = 0, accum = 0;j < strlen(cmd_line); j++){
           accum++;
           if(cmd_line[j]==';'){
             //run_cmd(cmd_line[j]);
@@ -270,19 +267,19 @@ int process_cmd(int cmd, const int cur_loc, char *cmd_line){
   int i,ret_val=-END_OF_CMDS;
 
   switch(cmd){
-  case QUIT:
-    ret_val = -1;
-    break;
-  case NORTH:
-  case SOUTH:
-  case EAST:
-  case WEST:
-  case UP:
-  case DOWN:
-    ret_val = location->exits[cmd];
-    if (ret_val==-1){
-    ret_val = -END_OF_CMDS;
-    }
+    case QUIT:
+      ret_val = -1;
+      break;
+    case NORTH:
+    case SOUTH:
+    case EAST:
+    case WEST:
+    case UP:
+    case DOWN:
+      ret_val = location->exits[cmd];
+      if (ret_val==-1){
+        ret_val = -END_OF_CMDS;
+      }
     break;
 //    case HINT:
 //    fprintf(stdout,"%s\n",location->hint);
@@ -290,8 +287,8 @@ int process_cmd(int cmd, const int cur_loc, char *cmd_line){
   case HELP:
     fprintf(stdout, "The commands/actions available are :-\n");
     for (i=0;commands[i].cmd_no<END_OF_CMDS;i++){
-    fprintf(stdout,"%s",i>0 && commands[i+1].cmdstr?", ":!commands[i+1].cmdstr?" and ":"\0");
-    fprintf(stdout,"%c[33m%s%c[39m",27,commands[i].cmdstr,27);
+      fprintf(stdout,"%s",i>0 && commands[i+1].cmdstr?", ":!commands[i+1].cmdstr?" and ":"\0");
+      fprintf(stdout,"%c[33m%s%c[39m",27,commands[i].cmdstr,27);
     }
     fprintf(stdout,"\n");
     break;
@@ -307,3 +304,11 @@ int get_command(const int loc_id){
   return find_command(commands,loc_id);
 }
 
+int get_direction_from_string(char *dir_str){
+  int idx = process_cmd_line(dir_str);
+  CMDS cmd = commands[idx].cmd_no;
+  if (cmd<NORTH || cmd>DOWN ){
+    cmd = END_OF_CMDS;
+  }
+  return cmd;
+}

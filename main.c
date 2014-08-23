@@ -23,7 +23,12 @@
 FILE *nul;
 int main(int argc, char** argv) {
   int loc_id=1;
-  nul  = fopen("/dev/null","w");
+  if (NULL == (nul  = fopen("/dev/null","w"))){
+    if (NULL == (nul = fopen("nul:","w"))){
+      fprintf(stderr,"Unable to open nul\nExiting now\n");
+      return -1;
+    }
+  };
   genesis();
   tinventoryitem the_inv_item;
   the_inv_item = create_inv_item("Iron Axe",83);

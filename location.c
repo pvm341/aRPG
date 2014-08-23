@@ -6,11 +6,13 @@
 #include "cmdpu.h"
 #include "location.h"
 #include "player.h"
+#include "csvdata.h"
+
+#define DEFAULT_FILE "default-world.csv"
+#define DEBUG 1
 
 extern acommand commands;
 typedef _Bool boolean;
-
-boolean truth = 1;
 
 static pll the_world;
 
@@ -125,68 +127,51 @@ plocation get_loc(const int loc_id){
 }
 
 void genesis(){
-  tlocation loc;
-  loc.items_list=NULL;
-  strcpy(loc.description,"Ground floor of Central Building");
-  strcpy(loc.name,"CentralBuildingGF");
-  loc.monsters = NULL;
-  loc.players = NULL;
-  loc.id = find_highest_id();
-  loc.exits[NORTH]=-1;
-  loc.exits[EAST]=-1;
-  loc.exits[SOUTH]=-1;
-  loc.exits[WEST]=-1;
-  loc.exits[DOWN]=-1;
-  loc.exits[UP]=-1;
-  add_location(loc);
-  loc.id = find_highest_id();
-  strcpy(loc.description,"An entrance to a dark cave");
-  strcpy(loc.name,"CaveEntrance");
-  add_location(loc);
-  link_locations(1,2,NORTH);
-  loc.id = find_highest_id();
-  strcpy(loc.description,"Dark of a cave");
-  strcpy(loc.name,"DarkCave");
-  add_location(loc);
-  link_locations(2,3,NORTH);
-  loc.id = find_highest_id();
-  strcpy(loc.description,"A forest of evergreen");
-  strcpy(loc.name,"EverGreenForest");
-  add_location(loc);
-  link_locations(1,4,EAST);
-  loc.id = find_highest_id();
-  strcpy(loc.description,"A sandy beach on a fresh water lake");
-  strcpy(loc.name,"SandyBeach");
-  add_location(loc);
-  link_locations(1,5,SOUTH);
-  loc.id = find_highest_id();
-  strcpy(loc.description,"Eastern river bank, a rope bridge is available to "
-                         "cross to the West side");
-  strcpy(loc.name,"EastRiverBank");
-  add_location(loc);
-  link_locations(1,6,WEST);
-  loc.id = find_highest_id();
-  strcpy(loc.description,"First floor of the central building");
-  strcpy(loc.name,"CentralBuilding1F");
-  add_location(loc);
-  link_locations(1,7,UP);
-  loc.id = find_highest_id();
-  strcpy(loc.description,"Basement of the central building");
-  strcpy(loc.name,"CentralBuildingBa");
-  add_location(loc);
-  link_locations(1,8,DOWN);
-  loc.id = find_highest_id();
-  strcpy(loc.description,"Western river bank, a rope bridge is available to "
-                         "cross to the East side");
-  strcpy(loc.name,"WestRiverBank");
-  add_location(loc);
-  link_by_names("WestRiverBank","EastRiverBank",EAST);
+  load_the_world(DEFAULT_FILE);
 }
 
 void save_the_world(){
+
 }
 
-void load_the_world(){
+
+void load_the_world(char *worldname){
+  FILE *csv;
+  tlocation loc;
+  char line[1200];
+  int r;
+
+  for (int n=NORTH; n<=DOWN; n++){
+    loc.exits[n] = -1;
+  }
+  if (NULL != (csv=fopen(worldname,"r"))){
+    while (!feof(csv)){
+      fgets(line,1199,csv);
+      if (*line != '#'){
+        csv_init(line);
+        char name1[21],name2[21],direction[6];
+        sscanf(csv_get_data(0)," %d",&r);
+        switch(r){
+          case 1:
+            strcpy(loc.name,csv_get_data(1));
+            strcpy(loc.description,csv_get_data(2));
+            loc.id = find_highest_id();
+#if DEBUG == 1
+            fprintf(stderr,"name:%s\ndescription:%s\n",loc.name,loc.description);
+#endif
+            add_location(loc);
+            break;
+          case 2:
+            strcpy(name1,csv_get_data(1));
+            strcpy(name2,csv_get_data(2));
+            strcpy(direction,csv_get_data(3));
+            link_by_names(name1,name2,get_direction_from_string(direction));
+            break;
+        }
+      }
+    }
+    fclose(csv);
+  }
 }
 
 void armageddon(){
