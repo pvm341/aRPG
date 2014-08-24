@@ -4,7 +4,7 @@
 1,"CentralBuildingGF","Ground floor of Central Building"
 1,"CaveEntrance","An entrance to a dark cave"
 2,"CentralBuildingGF","CaveEntrance",north
-1,"Bedroom","Bedroom on second floor of Central Building"
+1,"MainBedroom2f","Main Bedroom on second floor of Central Building"
 1,"DarkCave","Dark of a cave"
 2,"CaveEntrance","DarkCave",north
 1,"EverGreenForest","An ever green forest"
@@ -19,10 +19,18 @@
 2,"CentralBuildingGF","CentralBuildingBa",down
 1,"WestRiverBank","Western river bank, a rope bridge is available to cross to the East side"
 2,"WestRiverBank","EastRiverBank",east
+1,CB2fHallway,Hallway on second floor of Central Building
+1,CB2fBedroom2,Bedroom2 floor2 Central Building
+1,CB2fBedroom3,Bedroom3 floor2 Central Building
+2,CB2fHallway,CB2fBedroom2,east
+2,CB2fHallway,CB2fBedroom3,north
 2,CB2fHallway,CentralBuilding1F,down
 1,CB2fBathroom,Bathroom on second floor of Central Building
-1,CB2fHallway,Hallway on second floor of Central Building
-2,Bedroom,CB2fHallway,east
+2,MainBedroom2f,CB2fHallway,east
 2,CB2fBathroom,CB2fHallway,north
 2,CB2fHallway,CentralBuilding1F,down
-0,Bedroom
+1,MainBedroom1f,Main bedroom on first floor of Central Building
+2,MainBedroom1f,CentralBuilding1F,east
+1,CB1fBathroom,Bathroom on second floor of Central Building
+2,CB1fBathroom,CentralBuilding1F,north
+0,MainBedroom2f
