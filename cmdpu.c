@@ -6,7 +6,9 @@
 #include "list.h"
 #include "location.h"
 #include "cmdpu.h"
+
 #define CMDLINELEN 80
+#define MAX_REPEATS 999
 #define LOCAL_DEBUG 0
 
 const acommand commands =
@@ -124,18 +126,22 @@ void game_loop(){
     display_location(cur_loc);
     fgets(cmd_line,CMDLINELEN,stdin);
 
-    idx = find_cmd(cmd_line);
-    if (END_OF_CMDS == commands[idx].cmd_no){
+    if (isdigit(*cmd_line)){
       // command not found so assume not found
       notfound = 1;
       // may be a command preceeded by a number indicating repeats
       i = 0;
       repeats = 0;
-      while (strlen(cmd_line)>i && isdigit(cmd_line[i])){
+      while (strlen(cmd_line)>i && isdigit(cmd_line[i]) && repeats<MAX_REPEATS){
         repeats *= 10;
         repeats += (cmd_line[i++] - '0');
       }
+      while(strlen(cmd_line)>i && isdigit(cmd_line[i])){
+        i++;
+      }
       if (repeats){
+        if (repeats>MAX_REPEATS)
+          repeats = MAX_REPEATS;
         idx = find_cmd(cmd_line+i);
         cmd = commands[idx].cmd_no;
         if (HELP > cmd) {
@@ -147,9 +153,12 @@ void game_loop(){
             cur_loc = new_loc>=0?new_loc:cur_loc;
             repeats--;
           }
+          if (new_loc<=0)
+            new_loc = cur_loc;
         }
       }
     } else {
+      idx = find_cmd(cmd_line);
       cmd = commands[idx].cmd_no;
 //    if (GO == cmd) {
 //      args = strchr(cmd_line,'\0');
@@ -159,6 +168,10 @@ void game_loop(){
       if (HELP>cmd){
         new_loc = process_cmd(cmd,cur_loc,cmd_line);
         notfound = new_loc == -END_OF_CMDS;
+        if (notfound){
+          fprintf(stdout, "You can not go %s as there is no exit"
+                          " in that direction\n",commands[cmd].cmdstr);
+        }
       } else if (QUIT == abs(cmd)) {
         // found QUIT command
         cmd = process_cmd(cmd,cur_loc,cmd_line);

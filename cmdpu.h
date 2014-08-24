@@ -3,7 +3,7 @@
 
 typedef enum  {
                 NORTH, EAST, SOUTH, WEST, UP, DOWN, HELP,
-                HINT, INVENTORY, LOOK, TAKE, LEAVE, QUIT,
+                /*HINT,*/ INVENTORY, LOOK, TAKE, LEAVE, QUIT,
                 /*GO, */
                 SAVE, LOAD,
                 MAKE, TRADE,

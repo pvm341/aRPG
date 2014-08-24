@@ -167,8 +167,16 @@ void load_the_world(char *worldname){
               strcpy(name1,csv_get_data(1));
               ploc = find_link_by_name(name1);
               if (NULL != ploc){
+                int old_id = ploc->id;
                 ploc->id = 0;
                 set_start = line_number;
+                for (pll tmp_ptr = the_world; tmp_ptr; tmp_ptr = tmp_ptr->next){
+                  ploc = tmp_ptr->data;
+                  for(int dir=NORTH;dir<=DOWN;dir++){
+                    if (ploc->exits[dir] == old_id)
+                      ploc->exits[dir] = 0;
+                  }
+                }
               }
             } else {
               fprintf(stderr,"Attempt to reassign start location at %d of %s"
