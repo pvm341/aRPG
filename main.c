@@ -22,7 +22,6 @@
  */
 FILE *nul;
 int main(int argc, char** argv) {
-  int loc_id=1;
   if (NULL == (nul  = fopen("/dev/null","w"))){
     if (NULL == (nul = fopen("nul:","w"))){
       fprintf(stderr,"Unable to open nul\nExiting now\n");
@@ -57,10 +56,7 @@ int main(int argc, char** argv) {
 #ifdef GAMEOBJECTS_H
   display_items_list();
 #endif
-  loc_id = 1;
-  do {
-    loc_id = get_command(loc_id);
-  } while(loc_id>=0);
+  game_loop();
   armageddon();
   fclose(nul);
   return (EXIT_SUCCESS);

@@ -75,15 +75,20 @@ static int link_locations(const int id1, const int id2, const int link1to2){
   return error;
 }
 
+static plocation find_link_by_name(const char *name){
+  pll record = find_item(the_world,name,cmp_loc_name);
+  return NULL == record?NULL:record->data;
+}
+
 static int link_by_names(const char *name1,
                          const char *name2,
                          const int link1to2){
-  pll loc1, loc2;
+  pll rec1, rec2;
   int error = 1;
-  loc1 = find_item(the_world,name1,cmp_loc_name);
-  loc2 = find_item(the_world,name2,cmp_loc_name);
-  if (NULL != loc1 && NULL != loc2){
-    plocation l1 = loc1->data, l2 = loc2->data;
+  rec1 = find_item(the_world,name1,cmp_loc_name);
+  rec2 = find_item(the_world,name2,cmp_loc_name);
+  if (NULL != rec1 && NULL != rec2){
+    plocation l1 = rec1->data, l2 = rec2->data;
     l1->exits[link1to2] = l2->id;
     l2->exits[opposite_direction(link1to2)] = l1->id;
     error = 0;
@@ -138,8 +143,9 @@ void save_the_world(){
 void load_the_world(char *worldname){
   FILE *csv;
   tlocation loc;
+  plocation ploc;
   char line[1200];
-  int r;
+  int line_number=0,set_start = 0, r;
 
   for (int n=NORTH; n<=DOWN; n++){
     loc.exits[n] = -1;
@@ -147,11 +153,29 @@ void load_the_world(char *worldname){
   if (NULL != (csv=fopen(worldname,"r"))){
     while (!feof(csv)){
       fgets(line,1199,csv);
+      line_number++;
       if (*line != '#'){
         csv_init(line);
         char name1[21],name2[21],direction[6];
         sscanf(csv_get_data(0)," %d",&r);
         switch(r){
+          case 0:
+            // allows only one location to be the start point for every player
+            // once successfully set, subsequent CSV records of type zero
+            // are ineffective
+            if (!set_start){
+              strcpy(name1,csv_get_data(1));
+              ploc = find_link_by_name(name1);
+              if (NULL != ploc){
+                ploc->id = 0;
+                set_start = line_number;
+              }
+            } else {
+              fprintf(stderr,"Attempt to reassign start location at %d of %s"
+                " originally set in line %d\n",
+                line_number, worldname, set_start);
+            }
+            break;
           case 1:
             strcpy(loc.name,csv_get_data(1));
             strcpy(loc.description,csv_get_data(2));

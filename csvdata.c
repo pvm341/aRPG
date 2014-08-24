@@ -7,7 +7,7 @@
 static char *csv_copy_str = NULL;
 
 void csv_init(char *str){
-	char *ip, *op, tp, nc;
+	char *ip, *op, tp;
   if (NULL !=  csv_copy_str){
     free(csv_copy_str);
   }
@@ -37,6 +37,7 @@ void csv_done(){
   if (NULL != csv_copy_str){
     free(csv_copy_str);
   }
+  csv_copy_str = NULL;
 }
 
 char *csv_get_data(int n){
