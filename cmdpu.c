@@ -89,7 +89,7 @@ static void notreadyyet(FILE *file, CMDS cmd){
   fprintf(file,"> - Not yet implemented\n");
 }
 
-static int process_cmd_line(char *cmd_str){
+static int find_cmd(char *cmd_str){
   int idx, notfound;
 
   cmd_str = replace_strchr(cmd_str, '\n','\0');
@@ -104,8 +104,8 @@ static int process_cmd_line(char *cmd_str){
   notfound = 1;
   idx = -1;
   while (notfound){
-  idx++;
-  notfound = !(NULL == commands[idx].cmdstr) &&
+    idx++;
+    notfound = !(NULL == commands[idx].cmdstr) &&
      (strcmp(cmd_str,commands[idx].cmdstr));
   }
 #if LOCAL_DEBUG == 2
@@ -117,14 +117,14 @@ static int process_cmd_line(char *cmd_str){
 void game_loop(){
   char cmd_line[CMDLINELEN+1];
   int  notfound=1, game_quit=0, i, idx, cur_loc = 0, new_loc, repeats;
-  char *args;
+  char *args,*cmd_ptr, *separator, *separators=" ;";
   CMDS cmd;
 
   do {
     display_location(cur_loc);
     fgets(cmd_line,CMDLINELEN,stdin);
 
-    idx = process_cmd_line(cmd_line);
+    idx = find_cmd(cmd_line);
     if (END_OF_CMDS == commands[idx].cmd_no){
       // command not found so assume not found
       notfound = 1;
@@ -136,8 +136,10 @@ void game_loop(){
         repeats += (cmd_line[i++] - '0');
       }
       if (repeats){
-        cmd = process_cmd_line(cmd_line+i);
+        idx = find_cmd(cmd_line+i);
+        cmd = commands[idx].cmd_no;
         if (HELP > cmd) {
+          notfound = 0;
           new_loc = cur_loc;
           while (repeats && new_loc>=0) {
             new_loc = process_cmd(cmd,cur_loc,cmd_line+i);
@@ -174,7 +176,7 @@ void game_loop(){
 
 /* Runs a command. Returns 0 if it succeeded. Returns 1 if it failed */
 
-int run_cmd(char *command)
+int parse_cmd(char *cmd_line)
 {
   return 0;
 }
@@ -186,16 +188,6 @@ int clean_cmd_line(char *command)
   // remove new line characters
   // remove \0 characters
   return 0;
-}
-
-int find_the_command(char *command)
-{
-  return 0;
-}
-
-int find_command_with_parameters(char *command)
-{
-    return 0;
 }
 
 
@@ -241,10 +233,23 @@ int process_cmd(int cmd, const int cur_loc, char *cmd_line_args){
 }
 
 int get_direction_from_string(char *dir_str){
-  int idx = process_cmd_line(dir_str);
+  int idx = find_cmd(dir_str);
   CMDS cmd = commands[idx].cmd_no;
   if (cmd<NORTH || cmd>DOWN ){
     cmd = END_OF_CMDS;
   }
   return cmd;
 }
+
+/*
+else if (NULL != (separator = strpbrk(cmd_line,separators)){
+        cmd_ptr = cmd_line;
+        while (separator){
+          args = separator+1;
+          replace_strchr(cmd_ptr,*separator,'\0');
+          // now cmd_line is just the command and args now rest of the cmd_line
+        idx = process_cmd_line(cmd_ptr);
+
+
+      }
+*/
