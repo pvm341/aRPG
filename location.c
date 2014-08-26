@@ -9,7 +9,7 @@
 #include "csvdata.h"
 
 #define DEFAULT_FILE "default-world.csv"
-#define DEBUG 1
+#define DEBUG 0
 
 extern acommand commands;
 typedef _Bool boolean;
@@ -179,8 +179,8 @@ void load_the_world(char *worldname){
                 }
               }
             } else {
-              fprintf(stderr,"Attempt to reassign start location at %d of %s"
-                " originally set in line %d\n",
+              fprintf(stderr,"Attempt to reassign start location at line %d "
+                "of %s originally set in line %d\n",
                 line_number, worldname, set_start);
             }
             break;

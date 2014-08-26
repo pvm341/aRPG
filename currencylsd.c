@@ -14,6 +14,7 @@ char *real_name;
 char *slang_terms[3];
 };
 
+extern FILE *nul;
 typedef struct smoney tmoney, *pmoney, amoney[], **dmoney;
 
 amoney money_array =  {
@@ -51,17 +52,9 @@ tprice to_price(int value){
   return price;
 }
 
-int digits(int v){
-  int d = 1;
-  if (v>9) {
-    d += digits(v/10);
-  }
-  return d;
-}
-
 char *price_disp(char *disp_str, int value){
   tprice price = to_price(value);
-  int w = digits(price.l);
+  int w = fprintf(nul,"%d",price.l);
   sprintf(disp_str,"£%*d %2ds %2dd",w,price.l,price.s,price.d);
   return disp_str;
 }

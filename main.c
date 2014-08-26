@@ -45,6 +45,8 @@ int main(int argc, char** argv) {
   the_inv_item = create_inv_item("Minted Lamb Steak",35);
   add_item_to_inventory("Paul",the_inv_item);
   display_all_players();
+  the_inv_item = create_inv_item("Gold ring",252*100);
+  add_item_to_inventory("Paul",the_inv_item);
   the_inv_item = create_inv_item("Tinder Box",239);
   add_item_to_inventory("Paul",the_inv_item);
   display_all_players();

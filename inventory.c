@@ -33,18 +33,19 @@ static int display_inventory_item(FILE *file, pinventoryitem inv_item, int *widt
   char pricestr[21];
   int i,w;
   price_disp(pricestr,inv_item->value);
-  fprintf(file,"%2d ",c);
-  w=fprintf(file,"%s",inv_item->name);
+  fprintf(file,"|%2d",c);
+  w=fprintf(file,"|%s",inv_item->name);
   i=widths[0]-w;
   while (i-- >-1 ){
     fputc(' ',file);
   }
   w = fprintf(nul,"%s",pricestr);
   i = widths[1] - w;
-  while (i-- >-1 ){
+  fputc('|',file);
+  while (i--  ){
     fputc(' ',file);
   }
-  fprintf(file,"%s\n",pricestr);
+  fprintf(file," %s|\n",pricestr);
   return inv_item->value;
 }
 
@@ -60,11 +61,29 @@ int display_inventory_list(FILE *file, pll inventory_list){
     find_widths_inventory_item(widths,inv_item);
     list_ptr = list_ptr->next;
   }
-  int c=0;
+  int c=0,w;
+  fprintf(file,"+--+");
+  for (int i = 0;i<widths[0]; i++){
+    fprintf(file,"-");
+  }
+  fprintf(file,"+");
+  for (int i = 0;i<widths[1]; i++){
+    fprintf(file,"-");
+  }
+  fprintf(file,"+\n");
   for ( list_ptr = inventory_list; list_ptr; list_ptr = list_ptr->next){
     inv_item = list_ptr->data;
     total += display_inventory_item(file,inv_item,widths,++c);
   }
+  fprintf(file,"+--+");
+  for (int i = 0;i<widths[0]; i++){
+    fprintf(file,"-");
+  }
+  fprintf(file,"+");
+  for (int i = 0;i<widths[1]; i++){
+    fprintf(file,"-");
+  }
+  fprintf(file,"+\n");
   return total;
 }
 

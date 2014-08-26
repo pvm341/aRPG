@@ -1,12 +1,12 @@
 # depslib dependency file v1.0
-1407821093 source:/home/paul/c/rpg/currencylsd.c
+1408888861 source:/home/paul/c/rpg/currencylsd.c
 	<stdio.h>
 	<stdlib.h>
 	"currencylsd.h"
 
 1407530206 /home/paul/c/rpg/currencylsd.h
 
-1408839760 source:/home/paul/c/rpg/inventory.c
+1408890167 source:/home/paul/c/rpg/inventory.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -30,7 +30,7 @@
 	<string.h>
 	"list.h"
 
-1408859215 source:/home/paul/c/rpg/main.c
+1408908213 source:/home/paul/c/rpg/main.c
 	<stdio.h>
 	<stdlib.h>
 	"gameobjects.h"
@@ -48,7 +48,7 @@
 	"player.h"
 	"list.h"
 
-1408873056 source:/home/paul/c/rpg/location.c
+1408957618 source:/home/paul/c/rpg/location.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -60,14 +60,16 @@
 
 1408788954 /home/paul/c/rpg/location.h
 
-1408877357 source:/home/paul/c/rpg/cmdpu.c
+1409044098 source:/home/paul/c/rpg/cmdpu.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	<ctype.h>
+	<stdarg.h>
 	"list.h"
 	"location.h"
 	"cmdpu.h"
+	"ansiutils.h"
 
 1408873305 /home/paul/c/rpg/cmdpu.h
 
@@ -93,4 +95,13 @@
 	"csvdata.h"
 
 1408763634 /home/paul/c/rpg/csvdata.h
+
+1409046701 source:/home/paul/c/rpg/ansiutils.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<stdarg.h>
+	"ansiutils.h"
+
+1409012776 /home/paul/c/rpg/ansiutils.h
 

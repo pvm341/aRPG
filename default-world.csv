@@ -11,13 +11,13 @@
 2,"CentralBuildingGF","EverGreenForest",east
 1,"SandyBeach","A sandy beach on a fresh water lake"
 2,"CentralBuildingGF","SandyBeach",south
-1,"EastRiverBank","Eastern river bank, a rope bridge is available to cross to the West side"
+1,"EastRiverBank","River bank east, with a rope bridge"
 2,"CentralBuildingGF","EastRiverBank",west
 1,"CentralBuilding1F","First floor of the central building"
 2,"CentralBuildingGF","CentralBuilding1F",up
 1,"CentralBuildingBa","Basement of the central building"
 2,"CentralBuildingGF","CentralBuildingBa",down
-1,"WestRiverBank","Western river bank, a rope bridge is available to cross to the East side"
+1,"WestRiverBank","River bank west, with a rope bridge"
 2,"WestRiverBank","EastRiverBank",east
 1,CB2fHallway,Hallway on second floor of Central Building
 1,CB2fBedroom2,Bedroom2 floor2 Central Building
@@ -34,3 +34,4 @@
 1,CB1fBathroom,Bathroom on second floor of Central Building
 2,CB1fBathroom,CentralBuilding1F,north
 0,MainBedroom2f
+# end of file

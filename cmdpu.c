@@ -2,14 +2,18 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <stdarg.h>
 
 #include "list.h"
 #include "location.h"
 #include "cmdpu.h"
+#include "ansiutils.h"
 
 #define CMDLINELEN 80
 #define MAX_REPEATS 999
 #define LOCAL_DEBUG 0
+
+extern FILE *nul;
 
 const acommand commands =
   {
@@ -68,27 +72,29 @@ static char *replace_strchr(char *str, char schr, char rchr){
 }
 
 static void unknown_cmd(FILE *file,char *s){
-  fprintf(file,"<");
-  if (file == stdout){
-    fprintf(file,"%c[35m",27);
-  }
-  fprintf(file,"%s",s);
-  if (file == stdout){
-    fprintf(file,"%c[39m",27);
-  }
-  fprintf(file,"> - not a valid command! help displays the list\n");
+//  fprintf(file,"<");
+//  if (file == stdout){
+//    cfprintf(file,"%c[35m",27);
+//  }
+//  fprintf(file,"%s",s);
+//  if (file == stdout){
+//    fprintf(file,"%c[39m",27);
+//  }
+//  fprintf(file,"> - not a valid command! help displays the list\n");
+  ansi_fprintf(stdout,"[#Clear screen now[@24,1]<[MAGENTA]%s[RESET]> - not a valid command! help displays the list\n",s);
 }
 
 static void notreadyyet(FILE *file, CMDS cmd){
-  fprintf(file,"<");
-  if (file == stdout){
-    fprintf(file,"%c[36m",27);
-  }
-  fprintf(file, "%s",commands[cmd].cmdstr);
-  if (file == stdout){
-    fprintf(file,"%c[39m",27);
-  }
-  fprintf(file,"> - Not yet implemented\n");
+//  fprintf(file,"<");
+//  if (file == stdout){
+//    fprintf(file,"%c[36m",27);
+//  }
+//  fprintf(file, "%s",commands[cmd].cmdstr);
+//  if (file == stdout){
+//    fprintf(file,"%c[39m",27);
+//  }
+//  fprintf(file,"> - Not yet implemented\n");
+  ansi_fprintf(stdout,"<[CYAN]%s[RESET]>- Not yet implemented\n",commands[cmd].cmdstr);
 }
 
 static int find_cmd(char *cmd_str){
@@ -117,43 +123,62 @@ static int find_cmd(char *cmd_str){
 }
 
 void game_loop(){
+  // main game centre
+  // the command line
   char cmd_line[CMDLINELEN+1];
   int  notfound=1, game_quit=0, i, idx, cur_loc = 0, new_loc, repeats;
-  char *args,*cmd_ptr, *separator, *separators=" ;";
+  char *args, *cmd_ptr, *separator, *separators=" ;";
   CMDS cmd;
 
   do {
     display_location(cur_loc);
     fgets(cmd_line,CMDLINELEN,stdin);
 
+    // check for repeated direction to travel
+    // 5n or 23up 430west
+    // is the first character of cmd_line a digit okay so starting of a
+    // repeated command (direction) to travel
     if (isdigit(*cmd_line)){
-      // command not found so assume not found
+      // for safety set not found as no idea at present what follows the digit
       notfound = 1;
-      // may be a command preceeded by a number indicating repeats
+      // using i as index to the cmd_line string set i to zero as well repeats
       i = 0;
       repeats = 0;
+      // now step through the cmd_line each time multiply number of repeats by
+      // and adding the value of the next digit
       while (strlen(cmd_line)>i && isdigit(cmd_line[i]) && repeats<MAX_REPEATS){
         repeats *= 10;
         repeats += (cmd_line[i++] - '0');
       }
+      // may have cut off early because a very long string of digit made
+      // repeats bigger than predefined value
+      // so if there are digits remaining clear them
       while(strlen(cmd_line)>i && isdigit(cmd_line[i])){
         i++;
       }
+      // no good of doing the next bit if repeats are zero
       if (repeats){
+        // just make sure there are not more than max repeats
         if (repeats>MAX_REPEATS)
           repeats = MAX_REPEATS;
+        // now find the command probably a direction
         idx = find_cmd(cmd_line+i);
         cmd = commands[idx].cmd_no;
+        //make sure it is a direction if cmd < HELP it is a direction
         if (HELP > cmd) {
+          // assume that the exit is good in the chosen direction
           notfound = 0;
+          // just to force the start of the while copy cur_loc in to new_loc
           new_loc = cur_loc;
-          while (repeats && new_loc>=0) {
+          while (repeats && 0<=new_loc) {
             new_loc = process_cmd(cmd,cur_loc,cmd_line+i);
             // remain in place if the exit in repeated direction is invalid
-            cur_loc = new_loc>=0?new_loc:cur_loc;
+            cur_loc = 0<=new_loc?new_loc:cur_loc;
             repeats--;
           }
-          if (new_loc<=0)
+          // this is a bug fix so there is no seg fault and ensures remain in
+          // place if the new loc is not valid.
+          if (0>new_loc)
             new_loc = cur_loc;
         }
       }
@@ -169,8 +194,8 @@ void game_loop(){
         new_loc = process_cmd(cmd,cur_loc,cmd_line);
         notfound = new_loc == -END_OF_CMDS;
         if (notfound){
-          fprintf(stdout, "You can not go %s as there is no exit"
-                          " in that direction\n",commands[cmd].cmdstr);
+          ansi_fprintf(stdout, "You can not go [YELLOW,RED]%s[RESET,RESET] as "
+             "there is no exit in that direction\n",commands[cmd].cmdstr);
         }
       } else if (QUIT == abs(cmd)) {
         // found QUIT command
@@ -210,7 +235,7 @@ int process_cmd(int cmd, const int cur_loc, char *cmd_line_args){
 
   switch(cmd){
     case QUIT:
-      fprintf(stdout,"Quit game are you sure ? (yes or no)\n");
+      ansi_fprintf(stdout,"Quit game are you sure ? [YELLOW,BLUE][yes or no][RESET,RESET]\n");
       fgets(cmd_line_args,10,stdin);
       replace_strchr(cmd_line_args,'\n','\0');
       ret_val = strcmp(cmd_line_args,"yes")?-QUIT:QUIT;
@@ -232,8 +257,10 @@ int process_cmd(int cmd, const int cur_loc, char *cmd_line_args){
   case HELP:
     fprintf(stdout, "The commands/actions available are :-\n");
     for (i=0;commands[i].cmd_no<END_OF_CMDS;i++){
-      fprintf(stdout,"%s",i>0 && commands[i+1].cmdstr?", ":!commands[i+1].cmdstr?" and ":"\0");
-      fprintf(stdout,"%c[33m%s%c[39m",27,commands[i].cmdstr,27);
+//      fprintf(stdout,"%s",i>0 && commands[i+1].cmdstr?", ":!commands[i+1].cmdstr?" and ":"\0");
+//      fprintf(stdout,"%c[33m%s%c[39m",27,commands[i].cmdstr,27);
+        ansi_fprintf(stdout,"%s[YELLOW]%s[RESET]",i>0 && commands[i+1].cmdstr
+                ?", ":!commands[i+1].cmdstr?" and ":"\0",commands[i].cmdstr);
     }
     fprintf(stdout,"\n");
     break;
