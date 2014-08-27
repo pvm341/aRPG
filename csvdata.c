@@ -7,27 +7,24 @@
 static char *csv_copy_str = NULL;
 
 void csv_init(char *str){
-	char *ip, *op, tp;
-  if (NULL !=  csv_copy_str){
-    free(csv_copy_str);
-  }
+  char *ip, *op, tp;
   csv_copy_str = (char *) malloc(sizeof(char)*(strlen(str)+1));
 //  strcpy(csv_copy_str,str);
-  // look for the end of the string
+// look for the end of the string
   ip = str;
   op = csv_copy_str;
-	while (*ip){
+  while (*ip){
     if (*ip=='\"' || *ip=='\''){
       tp = *ip++;
       while (*ip && *ip != tp){
        *op++ = *ip++;
       }
-		} else if (*ip == ','){
+    } else if (*ip == ','){
       *op++ = 0;
     } else if (*ip == '\n' || *ip == '\r') {
-      *op++ =0;
-		} else {
-      *op++ = *ip;
+     *op++ =0;
+    } else {
+     *op++ = *ip;
     }
     ip++;
   }

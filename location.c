@@ -200,6 +200,7 @@ void load_the_world(char *worldname){
             link_by_names(name1,name2,get_direction_from_string(direction));
             break;
         }
+        csv_done();
       }
     }
     fclose(csv);

@@ -60,7 +60,7 @@
 
 1408788954 /home/paul/c/rpg/location.h
 
-1409044098 source:/home/paul/c/rpg/cmdpu.c
+1409121068 source:/home/paul/c/rpg/cmdpu.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -96,12 +96,110 @@
 
 1408763634 /home/paul/c/rpg/csvdata.h
 
-1409046701 source:/home/paul/c/rpg/ansiutils.c
+1409095469 source:/home/paul/c/rpg/ansiutils.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	<stdarg.h>
 	"ansiutils.h"
 
-1409012776 /home/paul/c/rpg/ansiutils.h
+1409120419 /home/paul/c/rpg/ansiutils.h
+
+1409122046 source:/home/paul/Dropbox/c/rpg/ansiutils.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<stdarg.h>
+	"ansiutils.h"
+
+1409120419 /home/paul/Dropbox/c/rpg/ansiutils.h
+
+1409121068 source:/home/paul/Dropbox/c/rpg/cmdpu.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<ctype.h>
+	<stdarg.h>
+	"list.h"
+	"location.h"
+	"cmdpu.h"
+	"ansiutils.h"
+
+1407925468 /home/paul/Dropbox/c/rpg/list.h
+
+1408788954 /home/paul/Dropbox/c/rpg/location.h
+
+1408873305 /home/paul/Dropbox/c/rpg/cmdpu.h
+
+1408859156 source:/home/paul/Dropbox/c/rpg/csvdata.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"csvdata.h"
+
+1408763634 /home/paul/Dropbox/c/rpg/csvdata.h
+
+1408888861 source:/home/paul/Dropbox/c/rpg/currencylsd.c
+	<stdio.h>
+	<stdlib.h>
+	"currencylsd.h"
+
+1407530206 /home/paul/Dropbox/c/rpg/currencylsd.h
+
+1408306838 source:/home/paul/Dropbox/c/rpg/gameobjects.c
+	<stdio.h>
+	<stdlib.h>
+	"gameobjects.h"
+
+1408306740 /home/paul/Dropbox/c/rpg/gameobjects.h
+
+1408890167 source:/home/paul/Dropbox/c/rpg/inventory.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"list.h"
+	"inventory.h"
+	"currencylsd.h"
+	"player.h"
+
+1407824649 /home/paul/Dropbox/c/rpg/inventory.h
+	"list.h"
+
+1408839667 /home/paul/Dropbox/c/rpg/player.h
+	"list.h"
+	"inventory.h"
+
+1408455492 source:/home/paul/Dropbox/c/rpg/list.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"list.h"
+
+1408957618 source:/home/paul/Dropbox/c/rpg/location.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"list.h"
+	"cmdpu.h"
+	"location.h"
+	"player.h"
+	"csvdata.h"
+
+1408908213 source:/home/paul/Dropbox/c/rpg/main.c
+	<stdio.h>
+	<stdlib.h>
+	"gameobjects.h"
+	"inventory.h"
+	"player.h"
+	"location.h"
+	"cmdpu.h"
+
+1408839667 source:/home/paul/Dropbox/c/rpg/player.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"currencylsd.h"
+	"inventory.h"
+	"player.h"
+	"list.h"
 

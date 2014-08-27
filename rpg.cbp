@@ -31,6 +31,10 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="ansiutils.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ansiutils.h" />
 		<Unit filename="cmdpu.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -43,6 +47,7 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="currencylsd.h" />
+		<Unit filename="default-world.csv" />
 		<Unit filename="gameobjects.c">
 			<Option compilerVar="CC" />
 		</Unit>
