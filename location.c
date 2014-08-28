@@ -215,7 +215,7 @@ void load_the_world(char *worldname){
             strcpy(name2,csv_get_data(2));
             strcpy(direction,csv_get_data(3));
             strcpy(exit_type,csv_get_data(4));
-            link_type = !strcmp(exit_type,"in")?1:!strcmp(exit_type,"out")?2:3;
+            link_type = !strcmp(exit_type,"entry")?1:!strcmp(exit_type,"exit")?2:3;
 
             link_by_names(name1,name2,get_direction_from_string(direction),link_type);
             break;

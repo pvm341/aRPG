@@ -29,7 +29,7 @@
 2,"SandyBeach 2","SandyBeach 1",north
 1,"Sandy hole 1","It is impossible to climb back up!"
 1,"Sandy hole 2","You feel yourself going deeper down! It is impossible to climb back up!"
-2,"SandyBeach 6","Sandy hole 1",down,out
+2,"SandyBeach 6","Sandy hole 1",down,exit
 2,"Sandy hole 1","Sandy hole 2",down
 1,"Sandstone chamber","A sandy cave in blocks from wence you came. Ahead is a sandstone tunnel."
 1,"Sandstone tunnel","A sandy cave in blocks from wence you came. Ahead is a sandy junction"
