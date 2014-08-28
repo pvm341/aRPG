@@ -61,7 +61,7 @@ int display_inventory_list(FILE *file, pll inventory_list){
     find_widths_inventory_item(widths,inv_item);
     list_ptr = list_ptr->next;
   }
-  int c=0,w;
+  int c=0;
   fprintf(file,"+--+");
   for (int i = 0;i<widths[0]; i++){
     fprintf(file,"-");

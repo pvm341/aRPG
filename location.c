@@ -7,6 +7,7 @@
 #include "location.h"
 #include "player.h"
 #include "csvdata.h"
+#include "ansiutils.h"
 
 #define DEFAULT_FILE "default-world.csv"
 #define DEBUG 0
@@ -26,7 +27,8 @@ static int cmp_loc_name(const plocation item1, const char *item2){
 
 static int find_highest_id(){
   pll ptr;
-  int id = 0;
+  int id = 1; // one is reserved for start location
+
   for (ptr = the_world; ptr; ptr = ptr->next){
     plocation loc = ptr->data;
     if (id< loc->id){
@@ -61,6 +63,7 @@ static int opposite_direction (const int current_direction){
   return ret_val;
 }
 
+#if 0
 static int link_locations(const int id1, const int id2, const int link1to2){
   pll loc1, loc2;
   int error = 1;
@@ -74,6 +77,7 @@ static int link_locations(const int id1, const int id2, const int link1to2){
   }
   return error;
 }
+#endif
 
 static plocation find_link_by_name(const char *name){
   pll record = find_item(the_world,name,cmp_loc_name);
@@ -98,11 +102,11 @@ static int link_by_names(const char *name1,
         break;
       case 2: // exit only
         l1->exits[link1to2] = l2->id;
-        l2->exits[opposite_direction(link1to2)] = -1;
+        l2->exits[opposite_direction(link1to2)] = -l2->id;
         error = 0;
         break;
       case 1: // entry only
-        l1->exits[link1to2] = -1;
+        l1->exits[link1to2] = -l1->id;
         l2->exits[opposite_direction(link1to2)] = l1->id;
         error = 0;
         break;
@@ -130,11 +134,15 @@ void display_location(const int loc_id){
     fprintf(stdout,"%s\n",the_location->description);
     fprintf(stdout,"Exits available are (");
     for(d=NORTH, c=0; d<=DOWN; d++ ){
-      if (the_location->exits[d]>=0) {
+      if (0 != the_location->exits[d]) {
         if (c++){
           fprintf(stdout,",");
         }
-        fprintf(stdout,"%s",commands[d].cmdstr);
+        if (0 < the_location->exits[d]){
+          fprintf(stdout,"%s",commands[d].cmdstr);
+        } else {
+          ansi_fprintf(stdout,"[MAGENTA]%s[RESET]",commands[d].cmdstr);
+        }
       }
     }
     fprintf(stdout,")\nWhat to do ?");
@@ -163,7 +171,7 @@ void load_the_world(char *worldname){
   int line_number=0,set_start = 0, r;
 
   for (int n=NORTH; n<=DOWN; n++){
-    loc.exits[n] = -1;
+    loc.exits[n] = 0;
   }
   if (NULL != (csv=fopen(worldname,"r"))){
     while (!feof(csv)){
@@ -185,13 +193,16 @@ void load_the_world(char *worldname){
               ploc = find_link_by_name(name1);
               if (NULL != ploc){
                 int old_id = ploc->id;
-                ploc->id = 0;
+                ploc->id = 1;
                 set_start = line_number;
                 for (pll tmp_ptr = the_world; tmp_ptr; tmp_ptr = tmp_ptr->next){
                   ploc = tmp_ptr->data;
                   for(int dir=NORTH;dir<=DOWN;dir++){
                     if (ploc->exits[dir] == old_id)
-                      ploc->exits[dir] = 0;
+                      ploc->exits[dir] = 1;
+                    else if (ploc->exits[dir] == -old_id){
+                      ploc->exits[dir] = -1;
+                    }
                   }
                 }
               }

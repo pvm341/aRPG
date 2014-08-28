@@ -127,7 +127,7 @@ void game_loop(){
   // main game centre
   // the command line
   char cmd_line[CMDLINELEN+1];
-  int  notfound=1, game_quit=0, i, idx, cur_loc = 0, new_loc, repeats;
+  int  notfound=1, game_quit=0, i, idx, cur_loc = 1, new_loc, repeats;
   char *args, *cmd_ptr, *separator, *separators=" ;";
   CMDS cmd;
 
@@ -174,12 +174,12 @@ void game_loop(){
           while (repeats && 0<=new_loc) {
             new_loc = process_cmd(cmd,cur_loc,cmd_line+i);
             // remain in place if the exit in repeated direction is invalid
-            cur_loc = 0<=new_loc?new_loc:cur_loc;
+            cur_loc = 0<new_loc?new_loc:cur_loc;
             repeats--;
           }
           // this is a bug fix so there is no seg fault and ensures remain in
           // place if the new loc is not valid.
-          if (0>new_loc)
+          if (0 == new_loc)
             new_loc = cur_loc;
         }
       }
@@ -202,9 +202,9 @@ void game_loop(){
         // found QUIT command
         cmd = process_cmd(cmd,cur_loc,cmd_line);
         game_quit = QUIT == cmd;
-      } else if (cmd<END_OF_CMDS){
+      } else if (END_OF_CMDS > cmd){
         new_loc = process_cmd(cmd, cur_loc, args);
-        notfound = new_loc != -1;
+        notfound = 0 >= new_loc ;
       } else {
         unknown_cmd(stdout, cmd_line);
       }
@@ -248,7 +248,7 @@ int process_cmd(int cmd, const int cur_loc, char *cmd_line_args){
     case UP:
     case DOWN:
       ret_val = location->exits[cmd];
-      if (ret_val==-1){
+      if (0 >= ret_val ){
         ret_val = -END_OF_CMDS;
       }
     break;
