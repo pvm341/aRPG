@@ -5,11 +5,8 @@
 
 #include "ansiutils.h"
 #define ESC 27
-extern FILE *nul;
 
-typedef enum {BLACK,RED,GREEN,YELLOW,BLUE,MAGENTA,CYAN,WHITE,unknown,RESET,
-              END_COLOURS}
-              COLOURS;
+extern FILE *nul;
 const char *colours[] = {"BLACK","RED","GREEN","YELLOW","BLUE","MAGENTA","CYAN",
                         "WHITE","unknown","RESET","<end>"};
 
@@ -32,6 +29,7 @@ static char *find_colour(char *ch_ptr, int *the_colour){
 
 static char *get_cursor_coords(char *ip, char **row, char **col){
   int comma = 0;
+
   while (*ip && ']' != *ip){
     if (',' == *ip){
       comma = 1;
@@ -67,6 +65,32 @@ int ansi_fprintf(FILE *file, char *fmt, ...){
   ip=inp_str;
   op=out_str;
   while(*ip){
+#ifdef PERCENT_K
+    // this work in progress and not yet ready
+    // %k[,%k] to change the colours as in normal paramerters
+    // needs some work.
+    if ('%' == *ip && 'k' == *(ip+1)){
+      i = va_arg(args,int);
+      if ((i>=0 && i <8) || 9 == i){
+        *op++ = ESC;
+        *op++ = '[';
+        *op++ = '3';
+        *op++ = '0'+i;
+      }
+      ip+= 2;
+      if (',' == *ip && '%' == *(ip+1) && 'k' == *(ip+2)) {
+        i = va_arg(args,int);
+        if ((i>=0 && i <8) || 9 == i){
+          *op++ = ';';
+          *op++ = '4';
+          *op++ = '0'+i;
+        }
+        ip += 3;
+      }
+      *op++ = 'm';
+
+    } else
+#endif
     if ('[' == *ip){
       // save current pointers ip to tip and op to top
       // incase there is contents [ contents ] not recognised
@@ -111,7 +135,7 @@ int ansi_fprintf(FILE *file, char *fmt, ...){
         *op++='1';
         *op++='H';
         ip++;
-      }else {
+      } else {
         // colour change [ink colour(,paper colour)]
         // First ink colour
         *op++ = '3';
@@ -160,7 +184,7 @@ int ansi_fprintf(FILE *file, char *fmt, ...){
   }
   *op = *ip;
   // make sure the output string is terminated
-  w=fprintf(file,out_str);
+  w=fprintf(file,"%s",out_str);
   free(inp_str);
   inp_str = NULL;
   free(out_str);

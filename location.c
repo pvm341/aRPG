@@ -82,16 +82,31 @@ static plocation find_link_by_name(const char *name){
 
 static int link_by_names(const char *name1,
                          const char *name2,
-                         const int link1to2){
+                         const int link1to2,
+                         const int link_type){
   pll rec1, rec2;
   int error = 1;
   rec1 = find_item(the_world,name1,cmp_loc_name);
   rec2 = find_item(the_world,name2,cmp_loc_name);
   if (NULL != rec1 && NULL != rec2){
     plocation l1 = rec1->data, l2 = rec2->data;
-    l1->exits[link1to2] = l2->id;
-    l2->exits[opposite_direction(link1to2)] = l1->id;
-    error = 0;
+    switch (link_type){
+      case 3: // both in and out exit
+        l1->exits[link1to2] = l2->id;
+        l2->exits[opposite_direction(link1to2)] = l1->id;
+        error = 0;
+        break;
+      case 2: // exit only
+        l1->exits[link1to2] = l2->id;
+        l2->exits[opposite_direction(link1to2)] = -1;
+        error = 0;
+        break;
+      case 1: // entry only
+        l1->exits[link1to2] = -1;
+        l2->exits[opposite_direction(link1to2)] = l1->id;
+        error = 0;
+        break;
+    }
   }
   return error;
 }
@@ -156,7 +171,9 @@ void load_the_world(char *worldname){
       line_number++;
       if (*line != '#'){
         csv_init(line);
-        char name1[21],name2[21],direction[6];
+        char name1[21],name2[21],direction[6],exit_type[10];
+        int link_type;
+
         sscanf(csv_get_data(0)," %d",&r);
         switch(r){
           case 0:
@@ -197,7 +214,10 @@ void load_the_world(char *worldname){
             strcpy(name1,csv_get_data(1));
             strcpy(name2,csv_get_data(2));
             strcpy(direction,csv_get_data(3));
-            link_by_names(name1,name2,get_direction_from_string(direction));
+            strcpy(exit_type,csv_get_data(4));
+            link_type = !strcmp(exit_type,"in")?1:!strcmp(exit_type,"out")?2:3;
+
+            link_by_names(name1,name2,get_direction_from_string(direction),link_type);
             break;
         }
         csv_done();

@@ -14,7 +14,7 @@
 #define LOCAL_DEBUG 0
 
 extern FILE *nul;
-
+extern const char *colours[];
 const acommand commands =
   {
     /* first of new commands go below here */
@@ -81,7 +81,7 @@ static void unknown_cmd(FILE *file,char *s){
 //    fprintf(file,"%c[39m",27);
 //  }
 //  fprintf(file,"> - not a valid command! help displays the list\n");
-  ansi_fprintf(stdout,"[#Clear screen now[@24,1]<[MAGENTA]%s[RESET]> - not a valid command! help displays the list\n",s);
+  ansi_fprintf(stdout,"[#Clear screen now[@24,1]<[YELLOW,BLUE]%s[RESET,RESET]> - not a valid command! help displays the list\n",s);
 }
 
 static void notreadyyet(FILE *file, CMDS cmd){
@@ -94,7 +94,8 @@ static void notreadyyet(FILE *file, CMDS cmd){
 //    fprintf(file,"%c[39m",27);
 //  }
 //  fprintf(file,"> - Not yet implemented\n");
-  ansi_fprintf(stdout,"<[CYAN]%s[RESET]>- Not yet implemented\n",commands[cmd].cmdstr);
+//  ansi_fprintf(stdout,"<[%k,%k][%s,%s]%s[RESET,RESET]>- Not yet implemented\n",colours[BLACK],colours[GREEN],commands[cmd].cmdstr);
+  ansi_fprintf(stdout,"<[BLACK,CYAN]%s[RESET,RESET]>- Not yet implemented\n",commands[cmd].cmdstr);
 }
 
 static int find_cmd(char *cmd_str){

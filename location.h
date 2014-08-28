@@ -3,8 +3,19 @@
 
 #define MAX_LOC_NAME_SIZE 21
 #define MAX_LOC_DESC_SIZE 768
+
+#if 0
+struct sexit {
+  int go_to;
+  unsigned short char ways; // both ways = 3 out only = 2 in only = 1
+};
+
+typedef struct sexit texit, *pexit, **dexit;
+#endif
+
 struct slocation {
-  int id, exits[6];
+  int id;
+  int exits[6];
   char name[MAX_LOC_NAME_SIZE];
   char description[MAX_LOC_DESC_SIZE];
   pll items_list;

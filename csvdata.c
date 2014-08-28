@@ -1,3 +1,7 @@
+/*
+ * Copyright 2014 Paul Massey
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
