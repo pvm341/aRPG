@@ -11,7 +11,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "gameobjects.h"
+#include "gameobjects.h" /* display_item_list() */
 #include "inventory.h"
 #include "player.h"
 #include "location.h"
