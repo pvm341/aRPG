@@ -13,7 +13,7 @@
 #include <stdlib.h>
 #include "inventory.h"
 #include "gameobjects.h" /* display_items_list() */
-#include "player.h"
+#include "player.h" /* add_player(), display_all_players(), del_all_players(), display_all_players() */
 #include "location.h" /* genesis(), armageddon(), */
 #include "cmdpu.h"
 
