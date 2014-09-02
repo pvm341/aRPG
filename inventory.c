@@ -4,10 +4,14 @@
 
 #include "list.h"
 #include "inventory.h"
-#include "currencylsd.h"
+#include "currencylsd.h" // price_disp()
 #include "player.h"
 extern FILE *nul;
 
+
+/*
+ * Helper functions
+ */ 
 static int cmp_descending_value(const pinventoryitem item2, const pinventoryitem item1)
 {
   return item1->value - item2->value;
@@ -49,7 +53,9 @@ static int display_inventory_item(FILE *file, pinventoryitem inv_item, int *widt
   return inv_item->value;
 }
 
-
+/*
+ * Functionality
+ */
 int display_inventory_list(FILE *file, pll inventory_list){
   int widths[2]={-1,-1};
   int total = 0;
