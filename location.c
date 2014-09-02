@@ -203,13 +203,11 @@ void load_the_world(char *worldname){
 
           case 0:
             /* Spawn location for the player */
-            // allows only one location to be the start point for every player
-            // once successfully set, subsequent CSV records of type zero
-            // are ineffective
+
             if (!set_start){
               strcpy(name1,csv_get_data(1));
               ploc = find_link_by_name(name1); /* Find the location stated */
-              if (NULL != ploc){
+              if (NULL != ploc){ /* If it found the location stated */
                 int old_id = ploc->id;
                 ploc->id = 1;
                 set_start = line_number;
@@ -227,6 +225,11 @@ void load_the_world(char *worldname){
                   }
                 }
               }
+
+            /* Allows only one location to be the start point for every player
+             * once successfully set, subsequent CSV records of type zero
+             * are ineffective
+             */
             } else {
               fprintf(stderr,"Attempt to reassign start location at line %d "
                 "of %s originally set in line %d\n",
