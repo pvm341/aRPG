@@ -17,6 +17,9 @@ typedef _Bool boolean;
 
 static pll the_world;
 
+/* 
+ * Helper Functions 
+ */
 static int cmp_loc_id(const plocation item1, const int *item2){
   return item1->id - *item2;
 }
@@ -169,16 +172,16 @@ void load_the_world(char *worldname){
   plocation ploc;
   char line[1200];
   int line_number=0,set_start = 0, r;
-
+  /* Set all exits to initially closed */
   for (int n=NORTH; n<=DOWN; n++){
     loc.exits[n] = 0;
   }
-  if (NULL != (csv=fopen(worldname,"r"))){
-    while (!feof(csv)){
-      fgets(line,1199,csv);
+  if (NULL != (csv=fopen(worldname,"r"))){ /* Open the file */
+    while (!feof(csv)){ /* While not end of file */
+      fgets(line,1199,csv); /* Get line from the csv and put it in the string buffer */
       line_number++;
-      if (*line != '#'){
-        csv_init(line);
+      if (*line != '#'){ /* If the line is not a comment */
+        csv_init(line); 
         char name1[21],name2[21],direction[6],exit_type[10];
         int link_type;
 
