@@ -28,7 +28,7 @@ int main(int argc, char** argv) {
       return -1;
     }
   };
-  genesis();
+  genesis(); /* I hope you mean big_bang() */
   tinventoryitem the_inv_item;
   the_inv_item = create_inv_item("Iron Axe",83);
   add_player("Paul");
@@ -59,7 +59,7 @@ int main(int argc, char** argv) {
   display_items_list();
 #endif
   game_loop();
-  armageddon();
+  armageddon(); /* Sun explodes */
   fclose(nul);
   return (EXIT_SUCCESS);
 }
