@@ -186,8 +186,10 @@ void load_the_world(char *worldname){
         char name1[21],name2[21],direction[6],exit_type[10];
         int link_type;
 
+        /* Determine what type of csv entry the line is */
         sscanf(csv_get_data(0)," %d",&r);
         switch(r){
+
           case 0:
             // allows only one location to be the start point for every player
             // once successfully set, subsequent CSV records of type zero
@@ -216,16 +218,20 @@ void load_the_world(char *worldname){
                 line_number, worldname, set_start);
             }
             break;
+
           case 1:
+            /* Add location */
             strcpy(loc.name,csv_get_data(1));
             strcpy(loc.description,csv_get_data(2));
-            loc.id = find_highest_id();
+            loc.id = find_highest_id(); // Auto-increment the ID as needed
 #if DEBUG == 1
             fprintf(stderr,"name:%s\ndescription:%s\n",loc.name,loc.description);
 #endif
             add_location(loc);
             break;
+
           case 2:
+            /* Create a link between two locations */
             strcpy(name1,csv_get_data(1));
             strcpy(name2,csv_get_data(2));
             strcpy(direction,csv_get_data(3));
@@ -235,8 +241,9 @@ void load_the_world(char *worldname){
             link_by_names(name1,name2,get_direction_from_string(direction),link_type);
             break;
         }
-        csv_done();
+        csv_done(); 
       }
+      /* Comments are implicitly ignored */
     }
     fclose(csv);
   }
