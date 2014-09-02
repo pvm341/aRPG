@@ -213,8 +213,11 @@ void load_the_world(char *worldname){
                 int old_id = ploc->id;
                 ploc->id = 1;
                 set_start = line_number;
+
+                /* Iterate through the entire world of locations */
                 for (pll tmp_ptr = the_world; tmp_ptr; tmp_ptr = tmp_ptr->next){
                   ploc = tmp_ptr->data;
+                  /* Iterate through each location's direction */
                   for(int dir=NORTH;dir<=DOWN;dir++){
                     if (ploc->exits[dir] == old_id)
                       ploc->exits[dir] = 1;
