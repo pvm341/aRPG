@@ -175,7 +175,7 @@ void load_the_world(char *worldname){
   FILE *csv;
   tlocation loc;
   plocation ploc;
-  char line[1200];
+  char line[CSV_MAX_LINE_LENGTH];
   int line_number=0,set_start = 0, r;
   /* Set all exits to initially closed */
   for (int n=NORTH; n<=DOWN; n++){
