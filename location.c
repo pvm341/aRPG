@@ -11,6 +11,10 @@
 
 #define DEFAULT_FILE "default-world.csv"
 #define DEBUG 0
+#define CSV_MAX_LINE_LENGTH 1200
+#define CSV_LOCATION_NAME_LENGTH 21
+#define CSV_DIRECTION_LENGTH 6
+#define CSV_EXIT_LENGTH 10
 
 extern acommand commands;
 typedef _Bool boolean;
@@ -183,7 +187,9 @@ void load_the_world(char *worldname){
       line_number++;
       if (*line != '#'){ /* If the line is not a comment */
         csv_init(line); 
-        char name1[21],name2[21],direction[6],exit_type[10];
+        char name1[CSV_LOCATION_NAME_LENGTH];
+        char name2[CSV_LOCATION_NAME_LENGTH];
+        char direction[CSV_DIRECTION_LENGTH],exit_type[CSV_EXIT_LENGTH];
         int link_type;
 
         /* Determine what type of csv entry the line is */
