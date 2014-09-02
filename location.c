@@ -162,6 +162,7 @@ void genesis(){
 }
 
 void save_the_world(){
+    printf("There is no hope!");
 
 }
 
