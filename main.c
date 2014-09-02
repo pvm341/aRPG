@@ -14,7 +14,7 @@
 #include "inventory.h"
 #include "gameobjects.h" /* display_items_list() */
 #include "player.h"
-#include "location.h"
+#include "location.h" /* genesis(), armageddon(), */
 #include "cmdpu.h"
 
 /*
