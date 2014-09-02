@@ -2,6 +2,10 @@
 #include <stdlib.h>
 
 #include "gameobjects.h"
+
+/*
+ * Globals
+ */
 extern FILE *nul;
 
 typedef enum {ARROW,
@@ -37,10 +41,18 @@ tobject game_items[EOI] =
     {"wood cutters axe",239, 64, 1,{EOI,EOI,EOI,EOI}}
   };
 
+/*
+ * Helper functions
+ */
+
 void spacer(char ch, int f, int a){
   for (int i = a; i<f;i++)
     fputc(ch,stdout);
 }
+
+/*
+ * Primary Functions
+ */
 
 void display_items_list(){
   int idx,w;
