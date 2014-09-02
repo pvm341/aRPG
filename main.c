@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "inventory.h"
+#include "gameobjects.h" /* display_items_list() */
 #include "player.h"
 #include "location.h"
 #include "cmdpu.h"
@@ -21,13 +22,17 @@
  */
 FILE *nul;
 int main(int argc, char** argv) {
+  /* Interoperability code */
   if (NULL == (nul  = fopen("/dev/null","w"))){
     if (NULL == (nul = fopen("nul:","w"))){
       fprintf(stderr,"Unable to open nul\nExiting now\n");
       return -1;
     }
   };
+  /* Create the world */
   genesis(); /* I hope you mean big_bang() */
+
+  /* Populate the world */
   tinventoryitem the_inv_item;
   the_inv_item = create_inv_item("Iron Axe",83);
   add_player("Paul");
