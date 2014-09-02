@@ -272,6 +272,14 @@ void load_the_world(char *worldname){
     }
     fclose(csv); /* Clears file from memory */
   }
+
+  /* 
+   * This means that a player start location was not given
+   * Or some error occured before it assigned set_start to higher than 0
+   */
+  if(set_start == 0){
+      fprintf(stderr, "Player start location was not given");
+  }
 }
 
 void armageddon(void){
