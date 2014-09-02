@@ -32,7 +32,7 @@ static int cmp_loc_name(const plocation item1, const char *item2){
   return strcmp(item1->name,item2);
 }
 
-static int find_highest_id(){
+static int find_highest_id(void){
   pll ptr;
   int id = 1; // one is reserved for start location
 
@@ -161,11 +161,11 @@ plocation get_loc(const int loc_id){
   return found_loc->data;
 }
 
-void genesis(){
+void genesis(void){
   load_the_world(DEFAULT_FILE);
 }
 
-void save_the_world(){
+void save_the_world(void){
     printf("There is no hope!");
 
 }
@@ -255,7 +255,8 @@ void load_the_world(char *worldname){
   }
 }
 
-void armageddon(){
+void armageddon(void){
   del_all_players();
   delete_all(&the_world,free);
 }
+
