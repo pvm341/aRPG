@@ -135,6 +135,9 @@ void add_location(tlocation a_new_location){
   if (NULL != new_location){
     memcpy(new_location,&a_new_location,sizeof(tlocation));
     add_location_to_world(&the_world,new_location);
+  } else {
+      /* An unlikely error, but still reported. */
+      fprintf(stderr, "Error adding %s. Heap is possibly full.", a_new_location.name);
   }
 }
 
