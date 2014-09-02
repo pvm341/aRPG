@@ -118,6 +118,10 @@ static int link_by_names(const char *name1,
         error = 0;
         break;
     }
+  } else if(NULL == rec1){
+      fprintf(stderr,"%s was not found when linking %s and %s", name1, name1, name2);
+  } else if(NULL == rec2){
+      fprintf(stderr,"%s was not found when linking %s and %s", name2, name1, name2);
   }
   return error;
 }
