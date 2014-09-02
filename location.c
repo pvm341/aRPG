@@ -183,10 +183,15 @@ void load_the_world(char *worldname){
   }
   if (NULL != (csv=fopen(worldname,"r"))){ /* Open the file */
     while (!feof(csv)){ /* While not end of file */
-      fgets(line,1199,csv); /* Get line from the csv and put it in the string buffer */
+      /* 
+       * fgets used instead of gets to stop bufferoverflow security risk.
+       * it adds a '\0' anyway irrespective of length, so:
+       * CSV_MAX_LINE_LENGTH-1 to be safe.
+       */
+      fgets(line,CSV_MAX_LINE_LENGTH-1,csv); /* Get line from the csv and put it in the string buffer */
       line_number++;
       if (*line != '#'){ /* If the line is not a comment */
-        csv_init(line); 
+        csv_init(line); /* Parses CSV line into memory */ 
         char name1[CSV_LOCATION_NAME_LENGTH];
         char name2[CSV_LOCATION_NAME_LENGTH];
         char direction[CSV_DIRECTION_LENGTH],exit_type[CSV_EXIT_LENGTH];
@@ -197,12 +202,13 @@ void load_the_world(char *worldname){
         switch(r){
 
           case 0:
+            /* Spawn location for the player */
             // allows only one location to be the start point for every player
             // once successfully set, subsequent CSV records of type zero
             // are ineffective
             if (!set_start){
               strcpy(name1,csv_get_data(1));
-              ploc = find_link_by_name(name1);
+              ploc = find_link_by_name(name1); /* Find the location stated */
               if (NULL != ploc){
                 int old_id = ploc->id;
                 ploc->id = 1;
@@ -247,11 +253,11 @@ void load_the_world(char *worldname){
             link_by_names(name1,name2,get_direction_from_string(direction),link_type);
             break;
         }
-        csv_done(); 
+        csv_done(); /* Clears CSV data from memory */
       }
       /* Comments are implicitly ignored */
     }
-    fclose(csv);
+    fclose(csv); /* Clears file from memory */
   }
 }
 
