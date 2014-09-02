@@ -69,6 +69,7 @@ int stuffd(int game_item_int, int spacer_attrib, int w){
  * Primary Functions
  */
 
+// Not sure how this function works internally.
 void display_items_list(){
   int idx,w;
   printf("ITEM                 VALUE  WEIGHT  REQUIREMENTS TO MAKE THIS\n");
