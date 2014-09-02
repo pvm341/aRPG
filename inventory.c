@@ -123,3 +123,4 @@ int del_item_from_inventory(const char *name, const char *inv_item){
   }
   return !okay;
 }
+
