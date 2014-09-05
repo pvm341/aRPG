@@ -1,6 +1,6 @@
 CC=gcc
 LD=g++
-CFLAGS=-c -Wall -std=c99
+CFLAGS=-c -Wall -std=c99 -O
 LDFLAGS=
 SOURCES=$(LS) *.c
 #main.cpp hello.cpp factorial.cpp
