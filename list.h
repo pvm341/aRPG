@@ -29,12 +29,16 @@ typedef struct sll tll, *pll, **dll;
 int cmp_int(const int item1, const int item2);
 int cmp_chr(const char item1, const char item2);
 
-void add_list_node(dll head, void *data);
-void add_ordered_list_node(dll head, void *data, int (*cmp)());
+// Recursive routines to add to the list
+void add_list_node(dll head, void *data);  // O(n)
+void add_ordered_list_node(dll head, void *data, int (*cmp)()); //O(n/2)
+// iterative routines to add to the list
+void add_node_to_list(dll head, void *data);  //O(1)
+void add_node_to_ordered_list(dll head, void *data, int (*cmp)()); //O(n/2)
+
 void delete_all(dll head, void(*free_on_del)());
 int display_list(FILE *file, pll head, int (*printrec)());
 int del_list_item(dll head, const void *item, void (*free_on_del)(), int(*cmp)());
 int delete_item(dll head, const void *item, void(*free_on_del)(), int(*cmp)());
 pll find_item(const pll head, const void *item, int (*cmp)());
-pll get_next(pll ptr);
 #endif // LIST_H_INCLUDED
