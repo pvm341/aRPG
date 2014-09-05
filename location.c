@@ -13,7 +13,7 @@
 #define DEBUG 0
 #define CSV_MAX_LINE_LENGTH 1200
 #define CSV_LOCATION_NAME_LENGTH 21
-#define CSV_DIRECTION_LENGTH 6
+#define CSV_DIRECTION_LENGTH 10
 #define CSV_EXIT_LENGTH 10
 
 extern acommand commands;
@@ -21,8 +21,8 @@ typedef _Bool boolean;
 
 static pll the_world;
 
-/* 
- * Helper Functions 
+/*
+ * Helper Functions
  */
 static int cmp_loc_id(const plocation item1, const int *item2){
   return item1->id - *item2;
@@ -118,16 +118,20 @@ static int link_by_names(const char *name1,
         error = 0;
         break;
     }
-  } else if(NULL == rec1){
-      fprintf(stderr,"%s was not found when linking %s and %s", name1, name1, name2);
-  } else if(NULL == rec2){
-      fprintf(stderr,"%s was not found when linking %s and %s", name2, name1, name2);
+  } else {
+    if(NULL == rec1){
+      fprintf(stderr,"%s was not found when linking %s and %s\n", name1, name1, name2);
+    }
+    if(NULL == rec2){
+      fprintf(stderr,"%s was not found when linking %s and %s\n", name2, name1, name2);
+    }
   }
   return error;
 }
 
 static void add_location_to_world(dll the_world,plocation new_location){
-  add_list_node(the_world,new_location);
+  //add_list_node(the_world,new_location);
+  add_node_to_list(the_world,new_location);
 }
 
 void add_location(tlocation a_new_location){
@@ -137,7 +141,7 @@ void add_location(tlocation a_new_location){
     add_location_to_world(&the_world,new_location);
   } else {
       /* An unlikely error, but still reported. */
-      fprintf(stderr, "Error adding %s. Heap is possibly full.", a_new_location.name);
+      fprintf(stderr, "Error adding %s. Heap is possibly full.\n", a_new_location.name);
   }
 }
 
@@ -177,108 +181,107 @@ void save_the_world(void){
 
 }
 
-
 void load_the_world(char *worldname){
   FILE *csv;
   tlocation loc;
   plocation ploc;
   char line[CSV_MAX_LINE_LENGTH];
   int line_number=0,set_start = 0, r;
+  char name1[CSV_LOCATION_NAME_LENGTH];
+  char name2[CSV_LOCATION_NAME_LENGTH];
+  char direction[CSV_DIRECTION_LENGTH],exit_type[CSV_EXIT_LENGTH];
+  int link_type;
+
+
   /* Set all exits to initially closed */
   for (int n=NORTH; n<=DOWN; n++){
     loc.exits[n] = 0;
   }
   if (NULL != (csv=fopen(worldname,"r"))){ /* Open the file */
     while (!feof(csv)){ /* While not end of file */
-      /* 
+      /*
        * fgets used instead of gets to stop bufferoverflow security risk.
        * it adds a '\0' anyway irrespective of length, so:
        * CSV_MAX_LINE_LENGTH-1 to be safe.
        */
-      fgets(line,CSV_MAX_LINE_LENGTH-1,csv); /* Get line from the csv and put it in the string buffer */
-      line_number++;
-      if (*line != '#'){ /* If the line is not a comment */
-        csv_init(line); /* Parses CSV line into memory */ 
-        char name1[CSV_LOCATION_NAME_LENGTH];
-        char name2[CSV_LOCATION_NAME_LENGTH];
-        char direction[CSV_DIRECTION_LENGTH],exit_type[CSV_EXIT_LENGTH];
-        int link_type;
+      if (fgets(line,CSV_MAX_LINE_LENGTH-1,csv)){ /* Get line from the csv and put it in the string buffer */
+        line_number++;
+        if (*line != '#'){ /* If the line is not a comment */
+          csv_init(line); /* Parses CSV line into memory */
 
-        /* Determine what type of csv entry the line is */
-        sscanf(csv_get_data(0)," %d",&r);
-        switch(r){
-
-          case 0:
+          /* Determine what type of csv entry the line is */
+          sscanf(csv_get_data(0)," %d",&r);
+          switch(r){
+            case 0:
             /* Spawn location for the player */
+              if (!set_start){
+                strcpy(name1,csv_get_data(1));
+                ploc = find_link_by_name(name1); /* Find the location stated */
+                if (NULL != ploc){ /* If it found the location stated */
+                  int old_id = ploc->id;
+                  ploc->id = 1;
+                  set_start = line_number;
 
-            if (!set_start){
-              strcpy(name1,csv_get_data(1));
-              ploc = find_link_by_name(name1); /* Find the location stated */
-              if (NULL != ploc){ /* If it found the location stated */
-                int old_id = ploc->id;
-                ploc->id = 1;
-                set_start = line_number;
-
-                /* Iterate through the entire world of locations */
-                for (pll tmp_ptr = the_world; tmp_ptr; tmp_ptr = tmp_ptr->next){
-                  ploc = tmp_ptr->data;
-                  /* Iterate through each location's direction */
-                  for(int dir=NORTH;dir<=DOWN;dir++){
-                    if (ploc->exits[dir] == old_id)
-                      ploc->exits[dir] = 1;
-                    else if (ploc->exits[dir] == -old_id){
-                      ploc->exits[dir] = -1;
+                  /* Iterate through the entire world of locations */
+                  for (pll tmp_ptr = the_world; tmp_ptr; tmp_ptr = tmp_ptr->next){
+                    ploc = tmp_ptr->data;
+                    /* Iterate through each location's direction */
+                    for(int dir=NORTH;dir<=DOWN;dir++){
+                      if (ploc->exits[dir] == old_id)
+                        ploc->exits[dir] = 1;
+                      else if (ploc->exits[dir] == -old_id){
+                        ploc->exits[dir] = -1;
+                      }
                     }
                   }
                 }
+
+              /* Allows only one location to be the start point for every player
+               * once successfully set, subsequent CSV records of type zero
+               * are ineffective
+               */
+              } else {
+                fprintf(stderr,"Attempt to reassign start location at line %d "
+                  "of %s originally set in line %d\n",
+                  line_number, worldname, set_start);
               }
+              break;
 
-            /* Allows only one location to be the start point for every player
-             * once successfully set, subsequent CSV records of type zero
-             * are ineffective
-             */
-            } else {
-              fprintf(stderr,"Attempt to reassign start location at line %d "
-                "of %s originally set in line %d\n",
-                line_number, worldname, set_start);
-            }
-            break;
+            case 1:
+              /* Add location */
+              strcpy(loc.name,csv_get_data(1));
+              strcpy(loc.description,csv_get_data(2));
+              loc.id = find_highest_id(); // Auto-increment the ID as needed
+              add_location(loc);
+              break;
 
-          case 1:
-            /* Add location */
-            strcpy(loc.name,csv_get_data(1));
-            strcpy(loc.description,csv_get_data(2));
-            loc.id = find_highest_id(); // Auto-increment the ID as needed
-#if DEBUG == 1
-            fprintf(stderr,"name:%s\ndescription:%s\n",loc.name,loc.description);
-#endif
-            add_location(loc);
-            break;
+            case 2:
+              /* Create a link between two locations */
+              strcpy(name1,csv_get_data(1));
+              strcpy(name2,csv_get_data(2));
 
-          case 2:
-            /* Create a link between two locations */
-            strcpy(name1,csv_get_data(1));
-            strcpy(name2,csv_get_data(2));
-            strcpy(direction,csv_get_data(3));
-            strcpy(exit_type,csv_get_data(4));
-            link_type = !strcmp(exit_type,"entry")?1:!strcmp(exit_type,"exit")?2:3;
+              strcpy(direction,csv_get_data(3));
+              strcpy(exit_type,csv_get_data(4));
 
-            link_by_names(name1,name2,get_direction_from_string(direction),link_type);
-            break;
+              link_type = !strcmp(exit_type,"entry")?1:!strcmp(exit_type,"exit")?2:3;
+
+              link_by_names(name1,name2,get_direction_from_string(direction),link_type);
+              break;
+          }
+          csv_done(); /* Clears CSV data from memory */
         }
-        csv_done(); /* Clears CSV data from memory */
+        /* Comments are implicitly ignored */
       }
-      /* Comments are implicitly ignored */
     }
     fclose(csv); /* Clears file from memory */
   }
 
-  /* 
+  /*
    * This means that a player start location was not given
    * Or some error occured before it assigned set_start to higher than 0
    */
   if(set_start == 0){
-      fprintf(stderr, "Player start location was not given");
+      fprintf(stderr, "Player start location was not given\n");
   }
 }
 

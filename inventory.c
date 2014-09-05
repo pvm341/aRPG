@@ -11,7 +11,7 @@ extern FILE *nul;
 
 /*
  * Helper functions
- */ 
+ */
 static int cmp_descending_value(const pinventoryitem item2, const pinventoryitem item1)
 {
   return item1->value - item2->value;
@@ -107,7 +107,8 @@ int add_item_to_inventory(const char *name, const tinventoryitem an_inv_item){
     pinventoryitem new_inv_item =(pinventoryitem) malloc(sizeof(tinventoryitem));
     if (ptr_player != NULL && new_inv_item != NULL){
         memcpy(new_inv_item,&an_inv_item,sizeof(tinventoryitem));
-        add_ordered_list_node(&player->inventory,new_inv_item,cmp_descending_value);
+        //add_ordered_list_node(&player->inventory,new_inv_item,cmp_descending_value);
+        add_node_to_ordered_list(&player->inventory,new_inv_item,cmp_descending_value);
         player->no_items_in_inventory++;
         error = 0;
     }

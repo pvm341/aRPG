@@ -95,6 +95,18 @@ void add_list_node(dll head, void *data){
   }
 }
 
+void add_node_to_list(dll head, void *data){
+  pll ptr;
+
+  ptr = create_list_item(data);
+  if (NULL == *head){
+    *head = ptr;
+  } else {
+    ptr->next = (*head);
+  }
+  (*head) = ptr;
+}
+
 void add_ordered_list_node(dll head, void *data, int (*cmp)()){
   pll tmp;
   dll node = head;
@@ -110,6 +122,55 @@ void add_ordered_list_node(dll head, void *data, int (*cmp)()){
       tmp=*node;
       *node=create_list_item(data);
       (*node)->next = tmp;
+    }
+  }
+}
+
+void add_node_to_ordered_list(dll head, void *data, int (*cmp)()){
+  dll working = head;
+  pll holder = *head;
+  pll ptr, tmp;
+  int cv, cv_next, done = 0;
+
+  holder = *head;
+  ptr = create_list_item(data);
+  if (NULL == *working){
+    *working = ptr;
+  } else {
+    while ( NULL != *working && !done) {
+      // second and subsequent elements
+      // start at working head
+      // compare working with new item.
+      cv=cmp((*working)->data,data);
+      if (0>cv){
+        // current item is bigger than new item
+        if (NULL != (*working)->next){
+          // move to the next element
+          cv_next = cmp((*working)->next->data,data);
+          if (0>cv_next){
+            *working = (*working)->next;
+          } else {
+            ptr->next = (*working)->next;
+            (*working)->next = ptr;
+            done = 1;
+            *head = holder;
+          }
+        } else {
+          // at the end of the list as working->next is NULL
+          // so it is safe to add new data to the end of the list/
+          ptr->next = (*working)->next;
+          (*working)->next = ptr;
+          done =1;
+          *head = holder;
+        }
+      } else if (0<cv) {
+        tmp = *head;
+        *working = ptr;
+        (*working)->next = tmp;
+        done = 1;
+        head = working;
+        holder = *head;
+      }
     }
   }
 }

@@ -13,7 +13,7 @@ static char *csv_copy_str = NULL;
 void csv_init(char *str){
   char *ip, *op, tp;
   csv_copy_str = (char *) malloc(sizeof(char)*(strlen(str)+1));
-//  strcpy(csv_copy_str,str);
+  memset(csv_copy_str,0,strlen(str));
 // look for the end of the string
   ip = str;
   op = csv_copy_str;

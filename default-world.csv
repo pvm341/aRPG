@@ -42,6 +42,7 @@
 2,"Sandstone tunnel","Sandstone junction",north,exit
 2,"Sandstone junction","Sandstone chamber 2",west
 2,"Sandstone junction","Sandstone chamber 3",east
+#  01234567890123456789
 2,"Sandstone junction","Sandstone chamber 4",north
 1,"EastRiverBank","River bank east, with a rope bridge"
 2,"CentralBuildingGF","EastRiverBank",west
