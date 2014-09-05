@@ -6,7 +6,7 @@
 #include "player.h"
 #include "list.h"
 
-/* being static only available in this model akin to private data item in Java/C++ */
+/* Helper functions */
 static pll head_of_player_list=NULL;
 
 static int cmp_players_alpha(const pplayer player1, const pplayer player2){
@@ -33,6 +33,7 @@ static void del_current_player(pll ptr){
   }
 }
 
+/* Core functionality */
 void add_player(char *name){
   if (NULL == find_item((pll)head_of_player_list,name,cmp_player_name)){
     pplayer new_player;
@@ -44,6 +45,7 @@ void add_player(char *name){
       add_ordered_list_node(&head_of_player_list, new_player, cmp_players_alpha);
     }
   }
+  // TODO: Need error reporting code
 }
 
 void load_player(char *name){
