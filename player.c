@@ -20,7 +20,9 @@ static int cmp_player_name(pplayer player, char *name){
 static int display_player(FILE *file, pplayer player){
   int total = 0;
   char pricestr[21];
-  fprintf(file,"%s has %d %s in their inventory list\n",player->name,player->no_items_in_inventory,player->no_items_in_inventory==1?"item":"items");
+  fprintf(file,"%s has %d %s in their inventory list\n",
+      player->name,player->no_items_in_inventory,
+      player->no_items_in_inventory==1?"item":"items");
   total = display_inventory_list(file,player->inventory);
   printf("This makes %s worth %s\n\n",player->name,price_disp(pricestr,total));
   return total;
@@ -35,14 +37,15 @@ static void del_current_player(pll ptr){
 
 /* Core functionality */
 void add_player(char *name){
-  if (NULL == find_item((pll)head_of_player_list,name,cmp_player_name)){
+  if (NULL == find_item_in_list((pll)head_of_player_list,name,cmp_player_name)){
     pplayer new_player;
     new_player = (pplayer) malloc(sizeof(tplayer));
     if ( NULL != new_player){
       strcpy(new_player->name,name);
       new_player->no_items_in_inventory=0;
       new_player->inventory = NULL;
-      add_ordered_list_node(&head_of_player_list, new_player, cmp_players_alpha);
+      add_node_to_ordered_list(&head_of_player_list, new_player,
+            cmp_players_alpha);
     }
   }
   // TODO: Need error reporting code
@@ -55,7 +58,8 @@ void save_player(char *name){
 }
 
 void del_player(char *name){
-  int okay = del_list_item(&head_of_player_list,name,del_current_player,cmp_player_name);
+  int okay = del_list_item(&head_of_player_list,name,del_current_player,
+    cmp_player_name);
   if (!okay)
     printf("Player %s not found!\n",name);
 }
@@ -78,5 +82,5 @@ void del_all_players(){
 //}
 
 pll find_player(const char *name){
-  return find_item(head_of_player_list,name,cmp_player_name);
+  return find_item_in_list(head_of_player_list,name,cmp_player_name);
 }

@@ -63,52 +63,21 @@ const acommand commands =
     {END_OF_CMDS, NULL}
   };
 
-static char *replace_strchr(char *str, char schr, char rchr){
-  char *ptr = strchr(str,schr);
-  if (ptr){
-    *ptr=rchr;
-  }
-  return str;
-}
-
 static void unknown_cmd(FILE *file,char *s){
-//  fprintf(file,"<");
-//  if (file == stdout){
-//    cfprintf(file,"%c[35m",27);
-//  }
-//  fprintf(file,"%s",s);
-//  if (file == stdout){
-//    fprintf(file,"%c[39m",27);
-//  }
-//  fprintf(file,"> - not a valid command! help displays the list\n");
-  ansi_fprintf(stdout,"[#Clear screen now[@24,1]<[YELLOW,BLUE]%s[RESET,RESET]> - not a valid command! help displays the list\n",s);
+  ansi_fprintf(stdout,"<[YELLOW,BLUE]%s[RESET,RESET]> - "
+        "not a valid command! help displays the list\n",s);
 }
 
 static void notreadyyet(FILE *file, CMDS cmd){
-//  fprintf(file,"<");
-//  if (file == stdout){
-//    fprintf(file,"%c[36m",27);
-//  }
-//  fprintf(file, "%s",commands[cmd].cmdstr);
-//  if (file == stdout){
-//    fprintf(file,"%c[39m",27);
-//  }
-//  fprintf(file,"> - Not yet implemented\n");
-//  ansi_fprintf(stdout,"<[%k,%k][%s,%s]%s[RESET,RESET]>- Not yet implemented\n",colours[BLACK],colours[GREEN],commands[cmd].cmdstr);
-  ansi_fprintf(stdout,"<[BLACK,CYAN]%s[RESET,RESET]>- Not yet implemented\n",commands[cmd].cmdstr);
+  ansi_fprintf(stdout,"<[BLACK,CYAN]%s[RESET,RESET]>- Not yet implemented\n",
+        commands[cmd].cmdstr);
 }
 
 static int find_cmd(char *cmd_str){
   int idx, notfound;
 
   cmd_str = replace_strchr(cmd_str, '\n','\0');
-#if LOCAL_DEBUG == 2
-  printf("**Debug 1 cmd_str <%s>\n",cmd_str?cmd_str:"NULL");
-#endif
   cmd_str = replace_strchr(cmd_str, ' ','\0');
-#if LOCAL_DEBUG == 2
-  printf("**Debug 2 cmd_str <%s>\n",cmd_str?cmd_str:"NULL");
-#endif
   // Now cmd_str is just the first word
   notfound = 1;
   idx = -1;
@@ -117,9 +86,6 @@ static int find_cmd(char *cmd_str){
     notfound = !(NULL == commands[idx].cmdstr) &&
      (strcmp(cmd_str,commands[idx].cmdstr));
   }
-#if LOCAL_DEBUG == 2
-  printf("**Debug 3 cmd <%s>\n",commands[idx].cmdstr);
-#endif
   return idx;
 }
 
@@ -229,17 +195,20 @@ int clean_cmd_line(char *command)
   return 0;
 }
 
-
 int process_cmd(int cmd, const int cur_loc, char *cmd_line_args){
   plocation location = get_loc(cur_loc);
   int i,ret_val=-END_OF_CMDS;
+  char *err;
 
   switch(cmd){
     case QUIT:
-      ansi_fprintf(stdout,"Quit game are you sure ? [YELLOW,BLUE][yes or no][RESET,RESET]\n");
-      fgets(cmd_line_args,10,stdin);
-      replace_strchr(cmd_line_args,'\n','\0');
-      ret_val = strcmp(cmd_line_args,"yes")?-QUIT:QUIT;
+      ansi_fprintf(stdout,"Quit game are you sure ? [YELLOW,BLUE]"
+        "[yes or no][RESET,RESET]\n");
+      err = fgets(cmd_line_args,10,stdin);
+      if (NULL != err) {
+        replace_strchr(cmd_line_args,'\n','\0');
+        ret_val = strcmp(cmd_line_args,"yes")?-QUIT:QUIT;
+      }
       break;
     case NORTH:
     case SOUTH:
@@ -258,8 +227,6 @@ int process_cmd(int cmd, const int cur_loc, char *cmd_line_args){
   case HELP:
     fprintf(stdout, "The commands/actions available are :-\n");
     for (i=0;commands[i].cmd_no<END_OF_CMDS;i++){
-//      fprintf(stdout,"%s",i>0 && commands[i+1].cmdstr?", ":!commands[i+1].cmdstr?" and ":"\0");
-//      fprintf(stdout,"%c[33m%s%c[39m",27,commands[i].cmdstr,27);
         ansi_fprintf(stdout,"%s[YELLOW]%s[RESET]",i>0 && commands[i+1].cmdstr
                 ?", ":!commands[i+1].cmdstr?" and ":"\0",commands[i].cmdstr);
     }
@@ -282,15 +249,3 @@ int get_direction_from_string(char *dir_str){
   return cmd;
 }
 
-/*
-else if (NULL != (separator = strpbrk(cmd_line,separators)){
-        cmd_ptr = cmd_line;
-        while (separator){
-          args = separator+1;
-          replace_strchr(cmd_ptr,*separator,'\0');
-          // now cmd_line is just the command and args now rest of the cmd_line
-        idx = process_cmd_line(cmd_ptr);
-
-
-      }
-*/

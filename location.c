@@ -16,8 +16,7 @@
 #define CSV_DIRECTION_LENGTH 10
 #define CSV_EXIT_LENGTH 10
 
-extern acommand commands;
-typedef _Bool boolean;
+extern const acommand commands;
 
 static pll the_world;
 
@@ -74,8 +73,8 @@ static int opposite_direction (const int current_direction){
 static int link_locations(const int id1, const int id2, const int link1to2){
   pll loc1, loc2;
   int error = 1;
-  loc1 = find_item(the_world,&id1,cmp_loc_id);
-  loc2 = find_item(the_world,&id2,cmp_loc_id);
+  loc1 = find_item_in_list(the_world,&id1,cmp_loc_id);
+  loc2 = find_item_in_list(the_world,&id2,cmp_loc_id);
   if (NULL != loc1 && NULL != loc2){
     plocation l1 = loc1->data, l2 = loc2->data;
     l1->exits[link1to2] = id2;
@@ -87,7 +86,7 @@ static int link_locations(const int id1, const int id2, const int link1to2){
 #endif
 
 static plocation find_link_by_name(const char *name){
-  pll record = find_item(the_world,name,cmp_loc_name);
+  pll record = find_item_in_list(the_world,name,cmp_loc_name);
   return NULL == record?NULL:record->data;
 }
 
@@ -97,8 +96,8 @@ static int link_by_names(const char *name1,
                          const int link_type){
   pll rec1, rec2;
   int error = 1;
-  rec1 = find_item(the_world,name1,cmp_loc_name);
-  rec2 = find_item(the_world,name2,cmp_loc_name);
+  rec1 = find_item_in_list(the_world,name1,cmp_loc_name);
+  rec2 = find_item_in_list(the_world,name2,cmp_loc_name);
   if (NULL != rec1 && NULL != rec2){
     plocation l1 = rec1->data, l2 = rec2->data;
     switch (link_type){
@@ -109,21 +108,23 @@ static int link_by_names(const char *name1,
         break;
       case 2: // exit only
         l1->exits[link1to2] = l2->id;
-        l2->exits[opposite_direction(link1to2)] = -l2->id;
+        l2->exits[opposite_direction(link1to2)] = -l1->id;
         error = 0;
         break;
       case 1: // entry only
-        l1->exits[link1to2] = -l1->id;
+        l1->exits[link1to2] = -l2->id;
         l2->exits[opposite_direction(link1to2)] = l1->id;
         error = 0;
         break;
     }
   } else {
     if(NULL == rec1){
-      fprintf(stderr,"%s was not found when linking %s and %s\n", name1, name1, name2);
+      fprintf(stderr,"%s was not found when linking %s and %s\n",
+          name1, name1, name2);
     }
     if(NULL == rec2){
-      fprintf(stderr,"%s was not found when linking %s and %s\n", name2, name1, name2);
+      fprintf(stderr,"%s was not found when linking %s and %s\n",
+          name2, name1, name2);
     }
   }
   return error;
@@ -141,7 +142,8 @@ void add_location(tlocation a_new_location){
     add_location_to_world(&the_world,new_location);
   } else {
       /* An unlikely error, but still reported. */
-      fprintf(stderr, "Error adding %s. Heap is possibly full.\n", a_new_location.name);
+      fprintf(stderr, "Error adding %s. Heap is possibly full.\n",
+          a_new_location.name);
   }
 }
 
@@ -168,8 +170,8 @@ void display_location(const int loc_id){
 }
 
 plocation get_loc(const int loc_id){
-  pll found_loc = find_item(the_world,&loc_id,cmp_loc_id);
-  return found_loc->data;
+  pll found_loc = find_item_in_list(the_world,&loc_id,cmp_loc_id);
+  return found_loc?found_loc->data:NULL;
 }
 
 void genesis(void){
@@ -204,7 +206,8 @@ void load_the_world(char *worldname){
        * it adds a '\0' anyway irrespective of length, so:
        * CSV_MAX_LINE_LENGTH-1 to be safe.
        */
-      if (fgets(line,CSV_MAX_LINE_LENGTH-1,csv)){ /* Get line from the csv and put it in the string buffer */
+      if (fgets(line,CSV_MAX_LINE_LENGTH-1,csv)){
+        /* Get line from the csv and put it in the string buffer */
         line_number++;
         if (*line != '#'){ /* If the line is not a comment */
           csv_init(line); /* Parses CSV line into memory */
@@ -223,7 +226,9 @@ void load_the_world(char *worldname){
                   set_start = line_number;
 
                   /* Iterate through the entire world of locations */
-                  for (pll tmp_ptr = the_world; tmp_ptr; tmp_ptr = tmp_ptr->next){
+                  for (pll tmp_ptr = the_world;
+                           tmp_ptr;
+                           tmp_ptr = tmp_ptr->next){
                     ploc = tmp_ptr->data;
                     /* Iterate through each location's direction */
                     for(int dir=NORTH;dir<=DOWN;dir++){
@@ -263,9 +268,11 @@ void load_the_world(char *worldname){
               strcpy(direction,csv_get_data(3));
               strcpy(exit_type,csv_get_data(4));
 
-              link_type = !strcmp(exit_type,"entry")?1:!strcmp(exit_type,"exit")?2:3;
+              link_type = !strcmp(exit_type,"entry")?1:
+                          !strcmp(exit_type,"exit")?2:3;
 
-              link_by_names(name1,name2,get_direction_from_string(direction),link_type);
+              link_by_names(name1,name2,get_direction_from_string(direction),
+                   link_type);
               break;
           }
           csv_done(); /* Clears CSV data from memory */
@@ -289,4 +296,3 @@ void armageddon(void){
   del_all_players();
   delete_all(&the_world,free);
 }
-

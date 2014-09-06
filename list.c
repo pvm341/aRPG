@@ -22,7 +22,7 @@ static pll create_list_item(void *new_data){
   return new_node;
 }
 
-pll find_item(const pll head, const void *item, int (*cmp)()){
+pll find_item_in_list(const pll head, const void *item, int (*cmp)()){
   pll ptr;
   int notfound;
 

@@ -50,19 +50,21 @@ void spacer(char ch, int f, int a){
     fputc(ch,stdout);
 }
 
-int stuffs(char* game_item_string, int spacer_attrib, int w){
-    w=fprintf(nul,"%s",game_item_string);
-    fprintf(stdout,"%s",game_item_string);
-    spacer(' ',spacer_attrib,w);
-    return w;
+int stuffs(char* game_item_string, int spacer_attrib){
+  int w;
+  w=fprintf(nul,"%s",game_item_string);
+  fprintf(stdout,"%s",game_item_string);
+  spacer(' ',spacer_attrib,w);
+  return w;
 }
 
 /* Alternative of stuffs, for integers */
-int stuffd(int game_item_int, int spacer_attrib, int w){
-    w=fprintf(nul,"%d",game_item_int);
-    spacer(' ',spacer_attrib,w);
-    fprintf(stdout," %d",game_item_int);
-    return w;
+int stuffd(int game_item_int, int spacer_attrib){
+  int w;
+  w=fprintf(nul,"%d",game_item_int);
+  spacer(' ',spacer_attrib,w);
+  fprintf(stdout," %d",game_item_int);
+  return w;
 }
 
 /*
@@ -71,13 +73,13 @@ int stuffd(int game_item_int, int spacer_attrib, int w){
 
 // Not sure how this function works internally.
 void display_items_list(){
-  int idx,w;
+  int idx;
   printf("ITEM                 VALUE  WEIGHT  REQUIREMENTS TO MAKE THIS\n");
   printf("----                 -----  ------  -------------------------\n");
   for (GAME_ITEMS item = ARROW; item<EOI; item++){
-    w = stuffs(game_items[item].name, 20, w);
-    w = stuffd(game_items[item].value, 5, w);
-    w = stuffd(game_items[item].weight,7, w);
+    stuffs(game_items[item].name, 20);
+    stuffd(game_items[item].value, 5);
+    stuffd(game_items[item].weight,7);
 
     if (EOI != game_items[item].requirements[0]){
       printf("  ");

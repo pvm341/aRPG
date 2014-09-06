@@ -6,7 +6,7 @@ typedef enum {BLACK,RED,GREEN,YELLOW,BLUE,MAGENTA,CYAN,WHITE,unknown,RESET,
               COLOURS;
 
 
-
+char *replace_strchr(char *str, char schr, char rchr);
 int ansi_fprintf(FILE *file, char *fmt, ...);
 
 #endif

@@ -10,6 +10,14 @@ extern FILE *nul;
 const char *colours[] = {"BLACK","RED","GREEN","YELLOW","BLUE","MAGENTA","CYAN",
                         "WHITE","unknown","RESET","<end>"};
 
+char *replace_strchr(char *str, char schr, char rchr){
+  char *ptr = strchr(str,schr);
+  if (ptr){
+    *ptr=rchr;
+  }
+  return str;
+}
+
 static char *find_colour(char *ch_ptr, int *the_colour){
   char colour[10];
   int i;

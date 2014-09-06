@@ -12,12 +12,14 @@ extern FILE *nul;
 /*
  * Helper functions
  */
-static int cmp_descending_value(const pinventoryitem item2, const pinventoryitem item1)
+static int cmp_descending_value(const pinventoryitem item2,
+                                const pinventoryitem item1)
 {
   return item1->value - item2->value;
 }
 
-static int cmp_inv_item_to_item_name(const pinventoryitem item, const char *item_name){
+static int cmp_inv_item_to_item_name(const pinventoryitem item,
+                                     const char *item_name){
   return strcmp(item->name,item_name);
 }
 
@@ -33,7 +35,8 @@ static void find_widths_inventory_item(int *widths, pinventoryitem inv_item){
     widths[1] = w;
 }
 
-static int display_inventory_item(FILE *file, pinventoryitem inv_item, int *widths, int c){
+static int display_inventory_item(FILE *file, pinventoryitem inv_item,
+                                   int *widths, int c){
   char pricestr[21];
   int i,w;
   price_disp(pricestr,inv_item->value);
@@ -108,7 +111,8 @@ int add_item_to_inventory(const char *name, const tinventoryitem an_inv_item){
     if (ptr_player != NULL && new_inv_item != NULL){
         memcpy(new_inv_item,&an_inv_item,sizeof(tinventoryitem));
         //add_ordered_list_node(&player->inventory,new_inv_item,cmp_descending_value);
-        add_node_to_ordered_list(&player->inventory,new_inv_item,cmp_descending_value);
+        add_node_to_ordered_list(&player->inventory,new_inv_item,
+            cmp_descending_value);
         player->no_items_in_inventory++;
         error = 0;
     }
@@ -119,9 +123,10 @@ int del_item_from_inventory(const char *name, const char *inv_item){
   int okay = 0; //assume error will result
   pll ptr_player = find_player(name);
   pplayer player = ptr_player->data;
-  if ((okay = del_list_item(&player->inventory,inv_item,free,cmp_inv_item_to_item_name))){
+  if ((okay = del_list_item(&player->inventory,inv_item,free,
+                            cmp_inv_item_to_item_name))
+     ){
     player->no_items_in_inventory--;
   }
   return !okay;
 }
-

@@ -16,7 +16,7 @@ struct scommand {
 };
 
 typedef struct scommand tcommand, acommand[], *pcommand, **dcommand;
-
+const acommand commands;
 int get_command(int loc_id);
 int process_cmd(int cmd, const int cur_loc, char *args);
 int get_direction_from_string(char *dir_str);

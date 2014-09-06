@@ -114,7 +114,7 @@
 
 1409149226 /home/paul/Dropbox/c/rpg/ansiutils.h
 
-1409675667 source:/home/paul/Dropbox/c/rpg/cmdpu.c
+1409910016 source:/home/paul/Dropbox/c/rpg/cmdpu.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -125,7 +125,7 @@
 	"cmdpu.h"
 	"ansiutils.h"
 
-1409890538 /home/paul/Dropbox/c/rpg/list.h
+1409907539 /home/paul/Dropbox/c/rpg/list.h
 
 1409243583 /home/paul/Dropbox/c/rpg/location.h
 
@@ -146,14 +146,14 @@
 
 1407530206 /home/paul/Dropbox/c/rpg/currencylsd.h
 
-1409691832 source:/home/paul/Dropbox/c/rpg/gameobjects.c
+1409910569 source:/home/paul/Dropbox/c/rpg/gameobjects.c
 	<stdio.h>
 	<stdlib.h>
 	"gameobjects.h"
 
 1408306740 /home/paul/Dropbox/c/rpg/gameobjects.h
 
-1409728860 source:/home/paul/Dropbox/c/rpg/inventory.c
+1409908796 source:/home/paul/Dropbox/c/rpg/inventory.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -169,13 +169,13 @@
 	"list.h"
 	"inventory.h"
 
-1409890538 source:/home/paul/Dropbox/c/rpg/list.c
+1409907539 source:/home/paul/Dropbox/c/rpg/list.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	"list.h"
 
-1409890741 source:/home/paul/Dropbox/c/rpg/location.c
+1409908585 source:/home/paul/Dropbox/c/rpg/location.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -195,7 +195,7 @@
 	"location.h"
 	"cmdpu.h"
 
-1409660711 source:/home/paul/Dropbox/c/rpg/player.c
+1409908890 source:/home/paul/Dropbox/c/rpg/player.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -203,4 +203,15 @@
 	"inventory.h"
 	"player.h"
 	"list.h"
+
+1409907539 source:/home/paul/Dropbox/c/rpg/mob.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"list.h"
+	"mob.h"
+
+1409905061 /home/paul/Dropbox/c/rpg/mob.h
+	"list.h"
+	"inventory.h"
 
